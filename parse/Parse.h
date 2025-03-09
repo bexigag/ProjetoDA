@@ -10,22 +10,23 @@
 #include <sstream>
 #include "../data_structures/Graph.h"
 #include "location.h"
+#include <limits>
 
 template <class T>
-class parse{
+class Parse{
   public:
-    parse(std::string filename): filename(filename){}
+    Parse(){}
     void readLocations(Graph<T> &graph);
     void readDistances(Graph<T> &graph);
-  private:
-    std::string filename;
+    void readInput(std::string filename);
+
 };
 
 template <class T>
-void parse<T>::readLocations(Graph<T>& graph) {
-  std::ifstream file(filename);
+void Parse<T>::readLocations(Graph<T>& graph) {
+  std::ifstream file("../DataSet/Locations.csv");
   if (!file.is_open()) {
-    std::cerr << "Error opening file " << filename << std::endl;
+    std::cerr << "Error opening file Locations.csv" << std::endl;
     return;
   }
 
@@ -51,10 +52,10 @@ void parse<T>::readLocations(Graph<T>& graph) {
 }
 
 template <class T>
-void parse<T>::readDistances(Graph<T>& graph) {
-  std::ifstream file(filename);
+void Parse<T>::readDistances(Graph<T>& graph) {
+  std::ifstream file("../DataSet/Distances.csv");
   if (!file.is_open()) {
-    std::cerr << "Error opening file " << filename << std::endl;
+    std::cerr << "Error opening file Distances.csv" << std::endl;
   }
 
   std::string line;
@@ -69,7 +70,10 @@ void parse<T>::readDistances(Graph<T>& graph) {
     getline(ss, walking, ',');
     getline(ss, driving, ',');
 
-    graph.addEdge(code1, code2);
+    if (driving == "X"){
+      graph.addEdge(code1, code2, INF, stoi(walking));
+    }
+    else graph.addEdge(code1, code2, stoi(driving), stoi(walking));
   }
 }
 
