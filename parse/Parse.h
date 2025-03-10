@@ -23,16 +23,15 @@ class Parse{
 
 
 void Parse::readLocations(Graph<Location> & graph) {
-  std::ifstream file("C:\\Users\\gonca\\Desktop\\Desktopp\\DA\\ProjetoDA\\DataSet\\Locations.csv");
-  if (!file.is_open()) {
-    std::cerr << "Error opening file Locations.csv" << std::endl;
-    return;
-  }
+  std::cout << "Enter locations (insert -1 to stop): " << std::endl;
+  std::cout << "Location,Id,Code,Parking" << std::endl;
 
   std::string line;
-  getline(file, line);
+  std::cin.ignore();
+  std::getline(std::cin, line);
 
-  while (getline(file, line)) {
+  while (line != "-1") {
+    std::cout << line << std::endl;
     std::stringstream ss(line);
     std::string location, idstr, code, parking;
 
@@ -41,6 +40,7 @@ void Parse::readLocations(Graph<Location> & graph) {
     getline(ss, code, ',');
     getline(ss, parking, ',');
 
+    std::cout << location << ',' << idstr << ',' << code << ',' << parking << std::endl;
 
     int id = std::stoi(idstr);
     bool hasparking;
@@ -48,22 +48,19 @@ void Parse::readLocations(Graph<Location> & graph) {
     else hasparking = false;
 
     graph.addVertex(Location(location, id, code,hasparking));
+    std::getline(std::cin, line);
   }
-  file.close();
 }
 
-
 void Parse::readDistances(Graph<Location> & graph) {
-  std::ifstream file("C:\\Users\\gonca\\Desktop\\Desktopp\\DA\\ProjetoDA\\DataSet\\Distances.csv");
-  if (!file.is_open()) {
-    std::cerr << "Error opening file Distances.csv" << std::endl;
-    return;
-  }
+  std::cout << "Enter distances (insert -1 to stop): " << std::endl;
+  std::cout << "Location,Id,Code,Parking" << std::endl;
 
   std::string line;
-  getline(file, line);
+  std::cin.ignore();
+  std::getline(std::cin, line);
 
-  while (getline(file, line)) {
+  while (line != "-1") {
     std::stringstream ss(line);
     std::string code1, code2, driving, walking;
 
@@ -77,19 +74,19 @@ void Parse::readDistances(Graph<Location> & graph) {
       graph.addEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), INF, stoi(walking));
     }
     else graph.addEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), stoi(driving), stoi(walking));
+    std::getline(std::cin, line);
   }
-  file.close();
 }
 
 void Parse::readInput(std::string filename, int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments) {
-  std::ifstream file("../DataSet/" + filename);
-  if (!file.is_open()) {
-    std::cerr << "Error opening file " << filename << std::endl;
-    return;
-  }
-  std::string line;
+  std::cout << "Enter input (insert -1 to stop): " << std::endl;
+  std::cout << "Mode:driving\nSource:<id>\nDestination:<id>\nAvoidNodes:<id>,<id>,...\nAvoidSegments:(id,id),(id,id),..\nIncludeNode:<id>\nMaxWalkTime:<int>" << std::endl;
 
-  while (getline(file, line)) {
+  std::string line;
+  std::cin.ignore();
+  std::getline(std::cin, line);
+
+  while (line != "-1") {
     std::stringstream ss(line);
     std::string key;
     getline(ss, key, ':');
@@ -128,8 +125,9 @@ void Parse::readInput(std::string filename, int & source, int & dest, int & maxW
         }
       }
     }
+    std::getline(std::cin, line);
   }
-  file.close();
+
 }
 
 

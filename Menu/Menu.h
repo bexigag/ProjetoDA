@@ -20,9 +20,10 @@ private:
     int dest = -1;
     vector<int> avoidNodes; //can be empty
     vector<pair<int,int>> avoidSegments; //can be empty
-    int includeNode = -1; //can be empty
+    int includeNode = -1; //can be  empty
     int maxWalkTime = -1;
     Graph<Location> graph;
+    Parse parse;
 };
 
 
@@ -45,17 +46,10 @@ void Menu::run() {
         cout << "Choose an option:" << endl;
         cin >> option;
         if (option == 0) {
-            string filename;
-            cout << "Enter file name or 'Graph' to build graph using Distances.csv and Locations.csv: " << endl;
-            cin >> filename;
-            Parse parse;
-            if (filename == "Graph") {
-                parse.readLocations(graph);
-                parse.readDistances(graph);
-            }
-            else {
-                parse.readInput(filename, source, dest, maxWalkTime, includeNode, avoidNodes, avoidSegments);
-            }
+
+            parse.readLocations(graph);
+            parse.readDistances(graph);
+
         }
         else if (option == 1) {
             cout << "Enter mode: " << endl;
@@ -122,7 +116,6 @@ void Menu::run() {
         }
     }
 }
-
 
 
 #endif //MENU_H
