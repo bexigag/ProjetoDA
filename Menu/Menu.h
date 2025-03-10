@@ -33,10 +33,10 @@ void Menu::run() {
     while(flag) {
         int option;
         cout << "Menu (input a number >9 to run)" << endl;
-        cout << "0 Parse Input Data" << endl;
-        cout << "1 Choose Mode" << endl;
-        cout << "2 Choose source" << endl;
-        cout << "3 Choose Destination" << endl;
+        cout << "0 Read graph" << endl;
+        cout << "1 Display input" << endl;
+        cout << "2 Read input" << endl;
+        cout << "3 Display graph" << endl;
         cout << "4 Choose AvoidNodes" << endl;
         cout << "5 Choose AvoidSegments" << endl;
         cout << "6 Choose IncludeNode" << endl;
@@ -50,21 +50,13 @@ void Menu::run() {
             parse.readDistances(graph);
         }
         else if (option == 1) {
-            cout << "Enter mode: " << endl;
-            cout << "1 driving " << endl;
-            cout << "2 driving-walking " << endl;
-            int m;
-            cin >> m;
-            if (m == 1) mode = "driving";
-            else if (m == 2) mode = "driving-walking";
+            parse.display(mode, source,dest,maxWalkTime,includeNode,avoidNodes,avoidSegments);
         }
         else if (option == 2) {
-            cout << "Enter source: " << endl;
-            cin >> source;
+            parse.readInput(mode, source,dest,maxWalkTime,includeNode,avoidNodes,avoidSegments);
         }
         else if (option == 3) {
-            cout << "Enter destination: " << endl;
-            cin >> dest;
+            parse.displayGraph(graph);
         }
         else if (option == 4) {
             avoidNodes.clear();
