@@ -33,7 +33,6 @@ void Parse::readLocations(Graph<Location> & graph) {
   std::getline(std::cin, line);
 
   while (line != "-1") {
-    std::cout << line << std::endl;
     std::stringstream ss(line);
     std::string location, idstr, code, parking;
 
@@ -41,8 +40,6 @@ void Parse::readLocations(Graph<Location> & graph) {
     getline(ss, idstr, ',');
     getline(ss, code, ',');
     getline(ss, parking, ',');
-
-    std::cout << location << ',' << idstr << ',' << code << ',' << parking << std::endl;
 
     int id = std::stoi(idstr);
     bool hasparking;
@@ -56,10 +53,10 @@ void Parse::readLocations(Graph<Location> & graph) {
 
 void Parse::readDistances(Graph<Location> & graph) {
   std::cout << "Enter distances (insert -1 to stop): " << std::endl;
-  std::cout << "Location,Id,Code,Parking" << std::endl;
+  std::cout << "Location1,Location2,Driving,Walking" << std::endl;
 
   std::string line;
-  std::cin.ignore();
+  //std::cin.ignore();
   std::getline(std::cin, line);
 
   while (line != "-1") {
@@ -71,8 +68,7 @@ void Parse::readDistances(Graph<Location> & graph) {
     getline(ss, driving, ',');
     getline(ss, walking, ',');
 
-
-    if (driving == "X"){
+    if (driving=="X") {
       graph.addBidirectionalEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), INF, stoi(walking));
     }
     else graph.addBidirectionalEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), stoi(driving), stoi(walking));
@@ -174,12 +170,14 @@ void Parse::display(std::string& mode, int & source, int & dest, int & maxWalkTi
 void Parse::displayGraph(Graph<Location> &graph) {
   std::cout << "Graph:" << std::endl;
   for (Vertex<Location> *vertex : graph.getVertexSet()) {
-    std::cout << vertex->getInfo().getName() << "," << vertex->getInfo().getName()
-    << ","<< vertex->getInfo().getId() << ","<< vertex->getInfo().getCode() << ","<< vertex->getInfo().getHasParking()<< std::endl;
+    std::cout << vertex->getInfo().getName()
+    << ","<< vertex->getInfo().getId() << ","<< vertex->getInfo().getCode()
+    << ","<< vertex->getInfo().getHasParking()<< std::endl;
 
     std::cout << "Paths: " << std::endl;
     for (Edge<Location> *e: vertex->getAdj()) {
-      std::cout << e->getDest()->getInfo().getName() << ":" << e->getWeightD() << "D " << e->getWeightW() << "W" << std::endl;
+      std::cout << e->getDest()->getInfo().getName() << ":" <<
+        e->getWeightD() << "D " << e->getWeightW() << "W" << std::endl;
     }
   }
 }
