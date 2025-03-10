@@ -6,6 +6,7 @@
 #define PARSE_H
 
 #include <iostream>
+#include <string>
 #include <fstream>
 #include <sstream>
 #include "../data_structures/Graph.h"
@@ -17,8 +18,8 @@ class Parse{
     Parse(){}
     void readLocations(Graph<Location> &graph);
     void readDistances(Graph<Location> &graph);
-    void readInput(std::string filename, int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments);
-
+    void readInput(std::string& mode, int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments);
+    void display(std::string& mode,int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments);
 };
 
 
@@ -78,7 +79,7 @@ void Parse::readDistances(Graph<Location> & graph) {
   }
 }
 
-void Parse::readInput(std::string filename, int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments) {
+void Parse::readInput(std::string& mode,int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments) {
   std::cout << "Enter input (insert -1 to stop): " << std::endl;
   std::cout << "Mode:driving\nSource:<id>\nDestination:<id>\nAvoidNodes:<id>,<id>,...\nAvoidSegments:(id,id),(id,id),..\nIncludeNode:<id>\nMaxWalkTime:<int>" << std::endl;
 
@@ -91,7 +92,10 @@ void Parse::readInput(std::string filename, int & source, int & dest, int & maxW
     std::string key;
     getline(ss, key, ':');
 
-    if (key == "Source") {
+    if (key=="Mode") {
+      ss >> mode;
+    }
+    else if (key == "Source") {
       ss >> source;
     } else if (key == "Destination") {
       ss >> dest;
@@ -127,6 +131,39 @@ void Parse::readInput(std::string filename, int & source, int & dest, int & maxW
     }
     std::getline(std::cin, line);
   }
+
+}
+
+void Parse::display(std::string& mode, int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes,
+  std::vector<std::pair<int,int>> &avoidSegments) {
+  std::cout << "These are your input configurations: " << std::endl;
+  std::cout << "Mode:" << mode << std::endl;
+  std::cout << "Source:" << source << std::endl;
+  std::cout << "Destination:" << dest << std::endl;
+  std::cout << "MaxWalkTime:" << maxWalkTime << std::endl;
+  std::cout << "IncludeNode:" << includeNode << std::endl;
+  if (avoidNodes.size() == 0) {std::cout << "AvoidNodes:" << "None" << std::endl;}
+  else {
+    std::cout << "AvoidNodes:";
+    for (int i=0;i<avoidNodes.size()-1;i++) {
+      std::cout << avoidNodes[i] << ',';
+    }
+    std::cout << avoidNodes[avoidNodes.size()-1] << std::endl;
+  }
+
+  if (avoidSegments.size() == 0) {
+    std::cout << "AvoidSegments:" << "None" << std::endl;
+  }
+  else{
+    std::cout << "AvoidSegments:";
+    for (int i=0;i<avoidSegments.size()-1;i++) {
+      std::cout << "(" << avoidSegments[i].first << ',' << avoidSegments[i].second << "),";
+    }
+    std::cout << "(" << avoidSegments[avoidSegments.size()-1].first << ",";
+    std::cout << avoidSegments[avoidSegments.size()-1].second << ")" << std::endl;
+  }
+
+
 
 }
 
