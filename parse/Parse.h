@@ -17,8 +17,8 @@ class Parse{
     Parse(){}
     void readLocations(Graph<Location> &graph);
     void readDistances(Graph<Location> &graph);
-    void readInput(std::string filename, int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments);
-
+    void readInput(int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments);
+    void displayGraph(Graph<Location> &graph);
 };
 
 
@@ -71,14 +71,14 @@ void Parse::readDistances(Graph<Location> & graph) {
 
 
     if (driving == "X"){
-      graph.addEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), INF, stoi(walking));
+      graph.addBidirectionalEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), INF, stoi(walking));
     }
-    else graph.addEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), stoi(driving), stoi(walking));
+    else graph.addBidirectionalEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), stoi(driving), stoi(walking));
     std::getline(std::cin, line);
   }
 }
 
-void Parse::readInput(std::string filename, int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments) {
+void Parse::readInput(int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments) {
   std::cout << "Enter input (insert -1 to stop): " << std::endl;
   std::cout << "Mode:driving\nSource:<id>\nDestination:<id>\nAvoidNodes:<id>,<id>,...\nAvoidSegments:(id,id),(id,id),..\nIncludeNode:<id>\nMaxWalkTime:<int>" << std::endl;
 
@@ -130,5 +130,18 @@ void Parse::readInput(std::string filename, int & source, int & dest, int & maxW
 
 }
 
+
+void Parse::displayGraph(Graph<Location> &graph) {
+  std::cout << "Graph:" << std::endl;
+  for (Vertex<Location> *vertex : graph.getVertexSet()) {
+    std::cout << vertex->getInfo().getName() << "," << vertex->getInfo().getName()
+    << ","<< vertex->getInfo().getId() << ","<< vertex->getInfo().getCode() << ","<< vertex->getInfo().getHasParking()<< std::endl;
+
+    std::cout << "Paths: " << std::endl;
+    for (Edge<Location> *e: vertex->getAdj()) {
+      std::cout << e->getDest()->getInfo().getName() << ":" << e->getWeightD() << "D " << e->getWeightW() << "W" << std::endl;
+    }
+  }
+}
 
 #endif //PARSE_H

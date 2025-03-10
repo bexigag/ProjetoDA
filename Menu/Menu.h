@@ -46,10 +46,8 @@ void Menu::run() {
         cout << "Choose an option:" << endl;
         cin >> option;
         if (option == 0) {
-
             parse.readLocations(graph);
             parse.readDistances(graph);
-
         }
         else if (option == 1) {
             cout << "Enter mode: " << endl;
