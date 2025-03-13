@@ -56,7 +56,7 @@ protected:
 
     // auxiliary fields
     bool visited = false; // used by DFS, BFS, Prim ...
-    bool processing = false; // used by isDAG (in addition to the visited attribute)
+    bool processing = false; // used by isDAG (in addition to the visited attribute) and project1
     int low = -1, num = -1; // used by SCC Tarjan
     unsigned int indegree; // used by topsort
     double dist = 0;
@@ -93,7 +93,7 @@ protected:
     //project 1
     double weight[2]; // edge weight, can also be used for capacity [driving, walking]
 
-    // auxiliary fields
+    // auxiliary fields and project1
     bool selected = false;
 
     // used for bidirectional edges
