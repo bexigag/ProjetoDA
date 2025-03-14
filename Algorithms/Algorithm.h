@@ -69,6 +69,7 @@ void Algorithm::algorithm2_1(Graph<Location> & graph, const int& source, const i
     std::cout<< "(" << distance << ")"<< std::endl;
   }
 
+  dst = dst1;
   std::cout << "AlternativeDrivingRoute:";
   distra(graph,src);
   if (dst->getPath() == nullptr) {
@@ -93,6 +94,8 @@ void Algorithm::algorithm2_1(Graph<Location> & graph, const int& source, const i
     }
     std::cout<< "(" << distance << ")"<< std::endl;
   }
+
+  resetGraph(graph);
 }
 
 void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src){
@@ -135,5 +138,6 @@ void Algorithm::resetGraph(Graph<Location> & graph) {
     }
   }
 }
+
 
 #endif //ALGORITHM_H
