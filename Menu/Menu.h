@@ -72,7 +72,7 @@ void Menu::run() {
             flag = false;
         }
         else {
-            cout << "Seu burro, só podes escolher até 4" << endl;
+            cout << "Seu burro, só podes escolher até 6" << endl;
         }
     }
 }

@@ -106,7 +106,7 @@ void Parse::readInput(std::string& mode,int & source, int & dest, int & maxWalkT
       avoidNodes.clear();
       std::string value;
       while (getline(ss, value, ',')) {
-        if (!value.empty()) {
+        if (!value.empty() && value != " "){
           avoidNodes.push_back(stoi(value));
         }
       }
