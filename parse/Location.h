@@ -17,17 +17,11 @@ class Location {
     int getId() const {return id;}
     std::string getCode() const {return code;}
     bool getHasParking() const {return hasparking;}
-    double getDistW() const {return distW;}
-    double getDistD() const {return distD;}
-    void setDist(const double dist, const int d_w) {
-      if (d_w == 0) {
-        this->distD = dist;
-        std::cout << "distD = " << this->distD << std::endl;
-      }
-      else {
-        this->distW = dist;
-        std::cout << "distW = " << this->distW << std::endl;
-      }
+    double getDistW() {return distW;}
+    double getDistD() {return distD;}
+    void setDist(double dist, int d_w) {
+      if (d_w == 0) {this->distD = dist;}
+      else {this->distW = dist;}
     }
 
   private:
@@ -35,8 +29,8 @@ class Location {
     int id;
     std::string code;
     bool hasparking;
-    double distW = INF;
-    double distD = INF;
+    double distW = 0;
+    double distD = 0;
 };
 
 #endif //LOCATION_H
