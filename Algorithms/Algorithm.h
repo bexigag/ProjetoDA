@@ -218,9 +218,25 @@ void Algorithm::algorithm3_1(Graph<Location> & graph, const int& source, const i
     }
   }
 
-  std::cout << "DrivingRoute:" << std::endl;
+  std::cout << "DrivingRoute:";
+  std::queue<int> pathD = best->getInfo().getPathD();
+  while (pathD.size() > 1) {
+    std::cout << pathD.front() << ",";
+    pathD.pop();
+  }
+  std::cout << pathD.front() << "(" << best->getInfo().getDistD() << ")" << std::endl;
+  pathD.pop();
   std::cout << "ParkingNode:";
   std::cout << best->getInfo().getId() << std::endl;
+
+  std::cout << "WalkingRoute:";
+  std::stack<int> pathW = best->getInfo().getPathW();
+  while (pathW.size() > 1) {
+    std::cout << pathW.top() << ",";
+    pathW.pop();
+  }
+  std::cout << pathW.top()<< "(" << best->getInfo().getDistW() << ")" << std::endl;
+  pathW.pop();
   std::cout << "TotalTime:" << bestDistance << std::endl;
 
 }
@@ -244,7 +260,10 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
 
     while (!pq.empty()){
       Vertex<Location> *v = pq.extractMin();
+
+      v->getInfo().addId(v->getInfo().getId(),d_w);
       v->getInfo().setDist(v->getDist(), d_w);
+
       v->setVisited(true);
       if (v == dst) break;
       for (Edge<Location> *e : v->getAdj()){
@@ -253,14 +272,14 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
         if (d_w == 0) {
           if (!u->isVisited() && e->getWeightD() + v->getDist() < u->getDist()){
             u->setDist(v->getDist() + e->getWeightD());
-            u->setPath(e);
+            u->getInfo().copyPathD(v->getInfo().getPathD());
             pq.decreaseKey(u);
           }
         }
         else {
           if (!u->isVisited() && e->getWeightW() + v->getDist() < u->getDist()){
             u->setDist(v->getDist() + e->getWeightW());
-            u->setPath(e);
+            u->getInfo().copyPathW(v->getInfo().getPathW());
             pq.decreaseKey(u);
           }
         }
