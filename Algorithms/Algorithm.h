@@ -204,16 +204,25 @@ void Algorithm::algorithm3_1(Graph<Location> & graph, const int& source, const i
   }
 
   distra(graph,src,nullptr,0);
+  distra(graph,dst,nullptr,1);
 
-
+  Vertex<Location> *best = nullptr;
+  int bestDistance = INF;
   for (Vertex<Location> *v: graph.getVertexSet()) {
     if (v->getInfo().getHasParking()) {
-      int distDriving = v->getDist();
-      
+      std::cout << v->getInfo().getDistW() << std::endl;
+      if (v->getInfo().getDistW() > maxWalkTIme) continue;
+      if (bestDistance > v->getInfo().getDistD() + v->getInfo().getDistW()) {
+        std::cout << "2" << std::endl;
+        bestDistance = v->getInfo().getDistD() + v->getInfo().getDistW();
+        best = v;
+      }
     }
   }
 
-
+  std::cout << "ParkingNode:";
+  std::cout << best->getInfo().getId() << std::endl;
+  std::cout << "TotalTime:" << bestDistance << std::endl;
 
 }
 
@@ -236,6 +245,7 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
 
     while (!pq.empty()){
       Vertex<Location> *v = pq.extractMin();
+      v->getInfo().setDist(v->getDist(), d_w);
       v->setVisited(true);
       if (v == dst) break;
       for (Edge<Location> *e : v->getAdj()){
