@@ -7,6 +7,7 @@
 
 #include <stack>
 #include <string>
+#include "../data_structures/Graph.h"
 
 class Location {
   public:
@@ -18,28 +19,30 @@ class Location {
     int getId() const {return id;}
     std::string getCode() const {return code;}
     bool getHasParking() const {return hasparking;}
+
     double getDistW() {return distW;}
     double getDistD() {return distD;}
+
     void setDist(double dist, int d_w) {
       if (d_w == 0) {this->distD = dist;}
       else {this->distW = dist;}
     }
-    void copyPathD(const std::queue<int> p) {
-      this->pathD = p;
+
+    void setPath(Edge<Location> *path, int d_w) {
+      if (d_w == 0) {this->pathD = path;}
+      else if (d_w == 1) this->pathW = path;
+      else {
+        this->pathD = path;
+        this->pathW = path;
+      }
     }
-    void copyPathW(const std::stack<int> p) {
-      this->pathW = p;
-    }
-    void addId(const int id, const int d_w) {
-      if (d_w == 0)
-        pathD.push(id);
-      else
-        pathW.push(id);
-    }
-    std::queue<int>& getPathD() {
+
+    Edge<Location> *getPathD() const {
       return pathD;
     }
-    std::stack<int>& getPathW() {return pathW;}
+    Edge<Location> *getPathW() const {
+      return pathW;
+    }
 
   private:
     std::string name;
@@ -48,8 +51,8 @@ class Location {
     bool hasparking;
     double distW = 0;
     double distD = 0;
-    std::queue<int> pathD;
-    std::stack<int> pathW;
+    Edge<Location> *pathD = nullptr;
+    Edge<Location> *pathW = nullptr;
 };
 
 #endif //LOCATION_H

@@ -24,7 +24,11 @@ class Algorithm{
       //restricted
       void algorithm3_1(Graph<Location> & graph, const int& source, const int& dest,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme);
 
+      void output_path(std::stack<int> & path);
       void resetGraph(Graph<Location> & graph);
+      void resetPaths(Graph<Location> & graph);
+
+
 };
 
 void Algorithm::runAlgorithm(Graph<Location> & graph,const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments){
@@ -49,62 +53,46 @@ void Algorithm::algorithm2_1(Graph<Location> & graph, const int& source, const i
   Vertex<Location> *dst1 = graph.findVertex(Location("",dest,"nullptr",false));
   Vertex<Location> *dst = dst1;
 
-
   std::cout << "BestDrivingRoute:";
 
   distra(graph,src,dst,0);
 
-  int distance = 0;
   std::stack<int> path;
 
-  if (dst->getPath() == nullptr) {
+  if (dst->getInfo().getPathD() == nullptr) {
     std::cout << "none" << std::endl;
   }
   else {
     path.push(dst->getInfo().getId());
-    distance += dst->getPath()->getWeightD();
-    dst = dst->getPath()->getOrig();
+    dst = dst->getInfo().getPathD()->getOrig();
     while (dst != src){
-      Edge<Location> *e = dst->getPath();
-      distance += e->getWeightD();
+      Edge<Location> *e = dst->getInfo().getPathD();
       path.push(dst->getInfo().getId());
       dst->setProcessing(true);
       dst = e->getOrig();
     }
     path.push(src->getInfo().getId());
-
-    while (!path.empty()) {
-      std::cout << path.top();
-      path.pop();
-      if (!path.empty()){std::cout << ",";}
-    }
-    std::cout<< "(" << distance << ")"<< std::endl;
+    output_path(path);
+    std::cout<< "(" << dst1->getInfo().getDistD() << ")"<< std::endl;
   }
 
   dst = dst1;
+
   std::cout << "AlternativeDrivingRoute:";
+  resetPaths(graph);
   distra(graph,src,dst,0);
-  if (dst->getPath() == nullptr) {
+  if (dst->getInfo().getPathD() == nullptr) {
     std::cout << "none" << std::endl;
   }
   else {
-    distance = 0;
-    dst = dst1;
     while (dst != src){
-      Edge<Location> *e = dst->getPath();
-      distance += e->getWeightD();
+      Edge<Location> *e = dst->getInfo().getPathD();
       path.push(dst->getInfo().getId());
       dst = e->getOrig();
     }
-
     path.push(src->getInfo().getId());
-
-    while (!path.empty()) {
-      std::cout << path.top();
-      path.pop();
-      if (!path.empty()){std::cout << ",";}
-    }
-    std::cout<< "(" << distance << ")"<< std::endl;
+    output_path(path);
+    std::cout<< "(" << dst1->getInfo().getDistD() << ")"<< std::endl;
   }
 
 }
@@ -136,16 +124,15 @@ void Algorithm::algorithm2_2(Graph<Location> & graph, const int& source, const i
   if (includeNode != -1) {
     Vertex<Location> *firstDst = graph.findVertex(Location("",includeNode,"nullptr",false));
     secondSrc = firstDst;
-    distra(graph,src,dst,0);
-    if (dst->getPath() == nullptr) {
+    distra(graph,src,firstDst,0);
+    distance += firstDst->getInfo().getDistD();
+    if (dst->getInfo().getPathD() == nullptr) {
       std::cout << "none" << std::endl;
     }
     else {
-      distance += firstDst->getPath()->getWeightD();
-      firstDst = firstDst->getPath()->getOrig();
+      firstDst = firstDst->getInfo().getPathD()->getOrig();
       while (firstDst != src) {
-        Edge<Location> *e = firstDst->getPath();
-        distance += e->getWeightD();
+        Edge<Location> *e = firstDst->getInfo().getPathD();
         path.push(firstDst->getInfo().getId());
         firstDst = e->getOrig();
       }
@@ -154,33 +141,25 @@ void Algorithm::algorithm2_2(Graph<Location> & graph, const int& source, const i
       while (!path.empty()) {
         std::cout << path.top() << ",";
         path.pop();
-
       }
     }
   }
 
   distra(graph,secondSrc,dst,0);
 
-  if (dst->getPath() == nullptr) {
+  if (dst->getInfo().getPathD() == nullptr) {
     std::cout << "none" << std::endl;
   }
   else {
-    path.push(dst->getInfo().getId());
-    distance += dst->getPath()->getWeightD();
-    dst = dst->getPath()->getOrig();
+    distance += dst->getInfo().getDistD();
     while (dst != secondSrc){
-      Edge<Location> *e = dst->getPath();
-      distance += e->getWeightD();
+      Edge<Location> *e = dst->getInfo().getPathD();
       path.push(dst->getInfo().getId());
       dst = e->getOrig();
     }
     path.push(secondSrc->getInfo().getId());
 
-    while (!path.empty()) {
-      std::cout << path.top();
-      path.pop();
-      if (!path.empty()){std::cout << ",";}
-    }
+    output_path(path);
     std::cout<< "(" << distance << ")"<< std::endl;
   }
 }
@@ -193,10 +172,18 @@ void Algorithm::algorithm3_1(Graph<Location> & graph, const int& source, const i
     graph.findVertex(Location("",id,"nullptr",false))->setProcessing(true);
   }
   for (std::pair a: avoidSegments) {
-    Vertex<Location> *v = graph.findVertex(Location("",a.first,"nullptr",false));
-    for (Edge<Location> *e: v->getAdj()) {
+    Vertex<Location> *v1 = graph.findVertex(Location("",a.first,"nullptr",false));
+    Vertex<Location> *v2 = graph.findVertex(Location("",a.second,"nullptr",false));
+    for (Edge<Location> *e: v1->getAdj()) {
       Vertex<Location> *w = e->getDest();
       if (w->getInfo().getId() == a.second) {
+        e->setSelected(true);
+        break;
+      }
+    }
+    for (Edge<Location> *e: v2->getAdj()) {
+      Vertex<Location> *w = e->getDest();
+      if (w->getInfo().getId() == a.first) {
         e->setSelected(true);
         break;
       }
@@ -206,38 +193,74 @@ void Algorithm::algorithm3_1(Graph<Location> & graph, const int& source, const i
   distra(graph,src,nullptr,0);       //driving
   distra(graph,dst,nullptr,1);   //walking
 
+  bool flag_max = true;
+  bool flag_no_path = true;
+
   Vertex<Location> *best = nullptr;
-  int bestDistance = INF;
-  for (Vertex<Location> *v: graph.getVertexSet()) {
+  double bestDistance = INF;
+  for (Vertex<Location> *v: graph.getVertexSet()) { //complexidade O(|V|)
     if (v->getInfo().getHasParking()) {
+      if (v->getInfo().getPathD() == nullptr || v->getInfo().getPathW() == nullptr ) continue;
+      flag_no_path = false;
       if (v->getInfo().getDistW() > maxWalkTIme) continue;
+      flag_max = false;
       if (bestDistance > v->getInfo().getDistD() + v->getInfo().getDistW()) {
         bestDistance = v->getInfo().getDistD() + v->getInfo().getDistW();
         best = v;
       }
+      else if (bestDistance == v->getInfo().getDistD() + v->getInfo().getDistW()) {
+        if (best->getInfo().getDistW() < v->getInfo().getDistW()) {
+          best = v;
+        }
+      }
     }
   }
 
-  std::cout << "DrivingRoute:";
-  std::queue<int> pathD = best->getInfo().getPathD();
-  while (pathD.size() > 1) {
-    std::cout << pathD.front() << ",";
-    pathD.pop();
+  if (flag_max || flag_no_path) {
+    std::cout << "DrivingRoute:none" << std::endl;
+    std::cout << "ParkingNode:none" << std::endl;
+    std::cout << "WalkingRoute:none" << std::endl;
+    std::cout << "TotalTime:" << std::endl;
+    if (flag_no_path)
+      std::cout << "No path FOUND" << std::endl;
+    else
+      std::cout << "Message:No possible route with max. walking time of " << maxWalkTIme <<" minutes." << std::endl;
   }
-  std::cout << pathD.front() << "(" << best->getInfo().getDistD() << ")" << std::endl;
-  pathD.pop();
-  std::cout << "ParkingNode:";
-  std::cout << best->getInfo().getId() << std::endl;
+  else {
+    Vertex<Location> * v;
+    v = best;
+    std::cout << "DrivingRoute:";
+    std::stack<int> path;
+    while (v != src){
+      Edge<Location> *e = v->getInfo().getPathD();
+      path.push(v->getInfo().getId());
+      v = e->getOrig();
+    }
+    path.push(src->getInfo().getId());
 
-  std::cout << "WalkingRoute:";
-  std::stack<int> pathW = best->getInfo().getPathW();
-  while (pathW.size() > 1) {
-    std::cout << pathW.top() << ",";
-    pathW.pop();
+    while (path.size() > 1) {
+      std::cout << path.top() << ",";
+      path.pop();
+    }
+    std::cout << path.top()
+    << "(" << best->getInfo().getDistD() << ")" << std::endl;
+    path.pop();
+
+    std::cout << "ParkingNode:";
+    std::cout << best->getInfo().getId() << std::endl;
+
+    std::cout << "WalkingRoute:";
+
+    v = best;
+
+    while (v != dst){
+      Edge<Location> *e = v->getInfo().getPathW();
+      std::cout << v->getInfo().getId() << ",";
+      v = e->getOrig();
+    }
+    std::cout << v->getInfo().getId()<< "(" << best->getInfo().getDistW() << ")" << std::endl;
+    std::cout << "TotalTime:" << bestDistance << std::endl;
   }
-  std::cout << pathW.top()<< "(" << best->getInfo().getDistW() << ")" << std::endl;
-  pathW.pop();
-  std::cout << "TotalTime:" << bestDistance << std::endl;
 
 }
 
@@ -246,7 +269,6 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
     for (Vertex<Location> *v :graph.getVertexSet()){
       v->setVisited(false);
       v->setDist(INF);
-      v->setPath(nullptr);
     }
 
     src->setDist(0);
@@ -261,7 +283,6 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
     while (!pq.empty()){
       Vertex<Location> *v = pq.extractMin();
 
-      v->getInfo().addId(v->getInfo().getId(),d_w);
       v->getInfo().setDist(v->getDist(), d_w);
 
       v->setVisited(true);
@@ -272,14 +293,14 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
         if (d_w == 0) {
           if (!u->isVisited() && e->getWeightD() + v->getDist() < u->getDist()){
             u->setDist(v->getDist() + e->getWeightD());
-            u->getInfo().copyPathD(v->getInfo().getPathD());
+            u->getInfo().setPath(e,d_w);
             pq.decreaseKey(u);
           }
         }
         else {
           if (!u->isVisited() && e->getWeightW() + v->getDist() < u->getDist()){
             u->setDist(v->getDist() + e->getWeightW());
-            u->getInfo().copyPathW(v->getInfo().getPathW());
+            u->getInfo().setPath(e,d_w);
             pq.decreaseKey(u);
           }
         }
@@ -288,13 +309,28 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
     }
 }
 
+void Algorithm::resetPaths(Graph<Location> & graph) {
+  for (Vertex<Location> *v :graph.getVertexSet()) {
+    v->getInfo().setPath(nullptr,2);
+  }
+}
+
 void Algorithm::resetGraph(Graph<Location> & graph) {
   for (Vertex<Location> *v :graph.getVertexSet()) {
     v->setProcessing(false);
+    v->getInfo().setPath(nullptr,2);
     for (Edge<Location> *e : v->getAdj()) {
       e->setSelected(false);
     }
   }
+}
+
+void Algorithm::output_path(std::stack<int> & path) {
+    while (!path.empty()) {
+      std::cout << path.top();
+      path.pop();
+      if (!path.empty()){std::cout << ",";}
+    }
 }
 
 
