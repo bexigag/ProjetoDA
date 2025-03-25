@@ -6,13 +6,23 @@
 #include "../parse/parse.h"
 #include "../data_structures/Graph.h"
 #include "../Algorithms/Algorithm.h"
+
 using namespace std;
 
 
 class Menu{
 public:
+    /**
+* @brief empty constructor of the Menu class
+* @return Menu
+*/
     Menu(){}
-    string getfilename();
+
+
+    /**
+* @brief function that allows the program to run
+* @return void
+*/
     void run();
 
 private:
@@ -72,7 +82,7 @@ void Menu::run() {
             flag = false;
         }
         else {
-            cout << "Seu burro, só podes escolher até 6" << endl;
+            cout << "invalid input" << endl;
         }
     }
 }

@@ -13,20 +13,115 @@
 #include <limits>
 #include <stack>
 
+/**
+ * @class Algorithm
+ * @brief This class is responsible for implementing the
+ * algorithms of the project
+ *
+ */
 class Algorithm{
     public:
+     /**
+     * @brief Empty constructor of the Algorithm class
+     */
       Algorithm(){}
+    /**
+     * @brief ...
+     *
+     * @param graph the input graph of type Location
+     * @param mode string that indicates the mode of the path (driving or driving-walking)
+     * @param source integer that indicates the id of the source node
+     * @param dest integer that indicates the id of the destination node
+     * @param maxWalkTime integer that indicates the maxWalktime
+     * @param includeNode integer that indicates the id of the node that must be included in the path
+     * @param avoidNodes vector of the ids (integers) of the nodes that cannot be included in the path
+     * @param avoidSegments vector of the edges that cannot be included in the path
+     * @return void
+     */
       void runAlgorithm(Graph<Location> & graph, const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments);
     private:
-      void distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Location> *dst , const int d_w);
-      void algorithm2_1(Graph<Location> & graph, const int& source, const int& dest); //not restricted
-      void algorithm2_2(Graph<Location> & graph, const int& source, const int& dest, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments);
-      //restricted
-      void algorithm3_1(Graph<Location> & graph, const int& source, const int& dest,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme);
-      void algorithm3_2(Graph<Location> & graph, const int& source, const int& dest,const int & maxWalkTIme);
+      /**
+     * @brief ...
+     *
+     * @param graph the input graph of type Location
+     * @param src source vertex of type Location
+     * @param dst destination vertex of type Location
+     * @param d_w integer that works as an indicator of the mode of the path
+     * (if d_w==0 the mode is driving else if d_w==1 the mode is walking)
+     * @return void
+     */
+     void distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Location> *dst , const int d_w);
 
+  /**
+      * @brief ...
+      *
+      * @param graph the input graph of type Location
+      * @param source integer that indicates the id of the source node
+      * @param dest integer that indicates the id of the destination node
+      * @return void
+      */
+     void algorithm2_1(Graph<Location> & graph, const int& source, const int& dest); //not restricted
+
+  /**
+    * @brief ...
+    *
+    * @param graph the input graph of type Location
+    * @param source integer that indicates the id of the source node
+    * @param dest integer that indicates the id of the destination node
+    * @param includeNode integer that indicates the id of the node that must be included in the path
+    * @param avoidNodes vector of the ids (integers) of the nodes that cannot be included in the path
+    * @param avoidSegments vector of the edges that cannot be included in the path
+    * @return void
+    */
+
+     void algorithm2_2(Graph<Location> & graph, const int& source, const int& dest, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments);
+
+  /**
+    * @brief ...
+    *
+    * @param graph the input graph of type Location
+    * @param source integer that indicates the id of the source node
+    * @param dest integer that indicates the id of the destination node
+    * @param avoidNodes vector of the ids (integers) of the nodes that cannot be included in the path
+    * @param avoidSegments vector of the edges that cannot be included in the path
+    * @param maxWalkTIme integer indicating the max walk time of the path
+    * @return void
+    */
+     void algorithm3_1(Graph<Location> & graph, const int& source, const int& dest,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme);
+
+  /**
+      * @brief ...
+      *
+      * @param graph the input graph of type Location
+      * @param source integer that indicates the id of the source node
+      * @param dest integer that indicates the id of the destination node
+      * @param maxWalkTIme integer indicating the max walk time of the path
+      * @return void
+      */
+    void algorithm3_2(Graph<Location> & graph, const int& source, const int& dest,const int & maxWalkTIme);
+
+  /**
+    * @brief outputs the ids of the nodes that are included in the path
+    *
+    * @param path stack with the ids of the nodes included in the path
+    * @return void
+    */
       void output_path(std::stack<int> & path);
+
+  /**
+    * @brief ...
+    *
+    * @param graph the input graph of type Location
+    * @return void
+    */
       void resetGraph(Graph<Location> & graph);
+
+  /**
+    * @brief ...
+    *
+    * @param graph the input graph of type Location
+    * @return void
+    */
       void resetPaths(Graph<Location> & graph);
 
 
@@ -117,56 +212,55 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
   }
 }
 
-#include "Algorithm.h"
-
 void Algorithm::algorithm2_1(Graph<Location> & graph, const int& source, const int& dest) {
-    Vertex<Location> *src = graph.findVertex(Location("",source,"nullptr",false));
+  Vertex<Location> *src = graph.findVertex(Location("",source,"nullptr",false));
 
-    Vertex<Location> *dst1 = graph.findVertex(Location("",dest,"nullptr",false));
-    Vertex<Location> *dst = dst1;
+  Vertex<Location> *dst1 = graph.findVertex(Location("",dest,"nullptr",false));
+  Vertex<Location> *dst = dst1;
 
-    std::cout << "BestDrivingRoute:";
+  std::cout << "BestDrivingRoute:";
 
-    distra(graph,src,dst,0);
+  distra(graph,src,dst,0);
 
-    std::stack<int> path;
+  std::stack<int> path;
 
-    if (dst->getInfo().getPathD() == nullptr) {
-        std::cout << "none" << std::endl;
+  if (dst->getInfo().getPathD() == nullptr) {
+    std::cout << "none" << std::endl;
+  }
+  else {
+    path.push(dst->getInfo().getId());
+    dst = dst->getInfo().getPathD()->getOrig();
+    while (dst != src){
+      Edge<Location> *e = dst->getInfo().getPathD();
+      path.push(dst->getInfo().getId());
+      dst->setProcessing(true);
+      dst = e->getOrig();
     }
-    else {
-        path.push(dst->getInfo().getId());
-        dst = dst->getInfo().getPathD()->getOrig();
-        while (dst != src){
-            Edge<Location> *e = dst->getInfo().getPathD();
-            path.push(dst->getInfo().getId());
-            dst->setProcessing(true);
-            dst = e->getOrig();
-        }
-        path.push(src->getInfo().getId());
-        output_path(path);
-        std::cout<< "(" << dst1->getInfo().getDistD() << ")"<< std::endl;
-    }
+    path.push(src->getInfo().getId());
+    output_path(path);
+    std::cout<< "(" << dst1->getInfo().getDistD() << ")"<< std::endl;
+  }
 
-    dst = dst1;
+  dst = dst1;
 
-    std::cout << "AlternativeDrivingRoute:";
-    resetPaths(graph);
-    distra(graph,src,dst,0);
-    if (dst->getInfo().getPathD() == nullptr) {
-        std::cout << "none" << std::endl;
+  std::cout << "AlternativeDrivingRoute:";
+  resetPaths(graph);
+  distra(graph,src,dst,0);
+  if (dst->getInfo().getPathD() == nullptr) {
+    std::cout << "none" << std::endl;
+  }
+  else {
+    while (dst != src){
+      Edge<Location> *e = dst->getInfo().getPathD();
+      path.push(dst->getInfo().getId());
+      dst = e->getOrig();
     }
-    else {
-        while (dst != src){
-            Edge<Location> *e = dst->getInfo().getPathD();
-            path.push(dst->getInfo().getId());
-            dst = e->getOrig();
-        }
-        path.push(src->getInfo().getId());
-        output_path(path);
-        std::cout<< "(" << dst1->getInfo().getDistD() << ")"<< std::endl;
-    }
+    path.push(src->getInfo().getId());
+    output_path(path);
+    std::cout<< "(" << dst1->getInfo().getDistD() << ")"<< std::endl;
+  }
 }
+
 
 
 void Algorithm::algorithm2_2(Graph<Location> & graph, const int& source, const int& dest, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments) {
