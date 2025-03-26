@@ -39,7 +39,7 @@ class Algorithm{
      * @param avoidSegments vector of the edges that cannot be included in the path
      * @return void
      */
-      void runAlgorithm(Graph<Location> & graph, const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments);
+      void runAlgorithm(Graph<Location> * graph, const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments);
     private:
       /**
      * @brief performs a djikstra in the graph
@@ -58,7 +58,7 @@ class Algorithm{
      * (if d_w==0 the mode is driving else if d_w==1 the mode is walking)
      * @return void
      */
-     void distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Location> *dst , const int d_w);
+     void distra(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst , const int d_w);
 
   /**
       * @brief  Independent Route Planning: this algorithm determines the shortest path
@@ -74,7 +74,7 @@ class Algorithm{
       * @param dest integer that indicates the id of the destination node
       * @return void
       */
-     void algorithm2_1(Graph<Location> & graph, const int& source, const int& dest); //not restricted
+     void algorithm2_1(Graph<Location> * graph, const int& source, const int& dest); //not restricted
 
   /**
     * @brief Restricted Route Planning:  this algorithm determines the shortest path
@@ -90,7 +90,7 @@ class Algorithm{
     * @param avoidSegments vector of the edges that cannot be included in the path
     * @return void
     */
-     void algorithm2_2(Graph<Location> & graph, const int& source, const int& dest, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments);
+     void algorithm2_2(Graph<Location> * graph, const int& source, const int& dest, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments);
 
   /**
     * @brief  Best route for driving and walking: shortest path
@@ -109,7 +109,7 @@ class Algorithm{
     * @param maxWalkTIme integer indicating the max walk time of the path
     * @return void
     */
-     void algorithm3_1(Graph<Location> & graph, const int& source, const int& dest,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme);
+     void algorithm3_1(Graph<Location> * graph, const int& source, const int& dest,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme);
 
   /**
   * @brief Approximate Solution: If no suitable route is found, display a list of suggestions
@@ -124,7 +124,7 @@ class Algorithm{
       * @param maxWalkTIme integer indicating the max walk time of the path
       * @return void
       */
-    void algorithm3_2(Graph<Location> & graph, const int& source, const int& dest,const int & maxWalkTIme);
+    void algorithm3_2(Graph<Location> * graph, const int& source, const int& dest,const int & maxWalkTIme);
 
   /**
     * @brief outputs the ids of the nodes that are included in the path
@@ -144,7 +144,7 @@ class Algorithm{
     * @param graph the input graph of type Location
     * @return void
     */
-      void resetGraph(Graph<Location> & graph);
+      void resetGraph(Graph<Location> * graph);
 
   /**
     * @brief resets both the driving and
@@ -154,12 +154,12 @@ class Algorithm{
     * @param graph the input graph of type Location
     * @return void
     */
-      void resetPaths(Graph<Location> & graph);
+      void resetPaths(Graph<Location> * graph);
 
 
 };
 
-void Algorithm::runAlgorithm(Graph<Location> & graph,const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments){
+void Algorithm::runAlgorithm(Graph<Location> * graph,const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments){
   std::cout << "Source:" << source<<std::endl;
   std::cout << "Destination:"<< dest <<std::endl;
   if (mode == "driving") {
@@ -175,14 +175,14 @@ void Algorithm::runAlgorithm(Graph<Location> & graph,const std::string& mode,con
 
 }
 
-void Algorithm::resetPaths(Graph<Location> & graph) {
-  for (Vertex<Location> *v :graph.getVertexSet()) {
+void Algorithm::resetPaths(Graph<Location> * graph) {
+  for (Vertex<Location> *v :graph->getVertexSet()) {
     v->getInfo().setPath(nullptr,2);
   }
 }
 
-void Algorithm::resetGraph(Graph<Location> & graph) {
-  for (Vertex<Location> *v :graph.getVertexSet()) {
+void Algorithm::resetGraph(Graph<Location> * graph) {
+  for (Vertex<Location> *v :graph->getVertexSet()) {
     v->setProcessing(false);
     v->getInfo().setPath(nullptr,2);
     for (Edge<Location> *e : v->getAdj()) {
@@ -199,11 +199,11 @@ void Algorithm::output_path(std::stack<int> & path) {
     }
 }
 
-void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Location> *dst ,const int d_w){
+void Algorithm::distra(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst ,const int d_w){
   MutablePriorityQueue<Vertex<Location>> pq;
 
   //O(V)
-  for (Vertex<Location> *v :graph.getVertexSet()){
+  for (Vertex<Location> *v :graph->getVertexSet()){
     v->setVisited(false);
     v->setDist(INF);
   }
@@ -211,7 +211,7 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
   src->setDist(0);
 
   //O(V)
-  for (Vertex<Location> *v :graph.getVertexSet()){
+  for (Vertex<Location> *v :graph->getVertexSet()){
     if (v->isProcessing()) {
       v->setVisited(true);
     }
@@ -248,10 +248,10 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
   }
 }
 
-void Algorithm::algorithm2_1(Graph<Location> & graph, const int& source, const int& dest) {
-  Vertex<Location> *src = graph.findVertex(Location("",source,"nullptr",false));
+void Algorithm::algorithm2_1(Graph<Location> * graph, const int& source, const int& dest) {
+  Vertex<Location> *src = graph->findVertex(Location("",source,"nullptr",false));
 
-  Vertex<Location> *dst1 = graph.findVertex(Location("",dest,"nullptr",false));
+  Vertex<Location> *dst1 = graph->findVertex(Location("",dest,"nullptr",false));
   Vertex<Location> *dst = dst1;
 
   std::cout << "BestDrivingRoute:";
@@ -299,16 +299,16 @@ void Algorithm::algorithm2_1(Graph<Location> & graph, const int& source, const i
 
 
 
-void Algorithm::algorithm2_2(Graph<Location> & graph, const int& source, const int& dest, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments) {
-  Vertex<Location> *src = graph.findVertex(Location("",source,"nullptr",false));
-  Vertex<Location> *dst = graph.findVertex(Location("",dest,"nullptr",false));
+void Algorithm::algorithm2_2(Graph<Location> * graph, const int& source, const int& dest, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments) {
+  Vertex<Location> *src = graph->findVertex(Location("",source,"nullptr",false));
+  Vertex<Location> *dst = graph->findVertex(Location("",dest,"nullptr",false));
 
   for (int id: avoidNodes) {
-    graph.findVertex(Location("",id,"nullptr",false))->setProcessing(true);
+    graph->findVertex(Location("",id,"nullptr",false))->setProcessing(true);
   }
   for (std::pair a: avoidSegments) {
-    Vertex<Location> *v1 = graph.findVertex(Location("",a.first,"nullptr",false));
-    Vertex<Location> *v2 = graph.findVertex(Location("",a.second,"nullptr",false));
+    Vertex<Location> *v1 = graph->findVertex(Location("",a.first,"nullptr",false));
+    Vertex<Location> *v2 = graph->findVertex(Location("",a.second,"nullptr",false));
     for (Edge<Location> *e: v1->getAdj()) {
       Vertex<Location> *w = e->getDest();
       if (w->getInfo().getId() == a.second) {
@@ -332,7 +332,7 @@ void Algorithm::algorithm2_2(Graph<Location> & graph, const int& source, const i
   Vertex<Location> *secondSrc = src;
 
   if (includeNode != -1) {
-    Vertex<Location> *firstDst = graph.findVertex(Location("",includeNode,"nullptr",false));
+    Vertex<Location> *firstDst = graph->findVertex(Location("",includeNode,"nullptr",false));
     secondSrc = firstDst;
     distra(graph,src,firstDst,0);
     distance += firstDst->getInfo().getDistD();
@@ -374,17 +374,17 @@ void Algorithm::algorithm2_2(Graph<Location> & graph, const int& source, const i
   }
 }
 
-void Algorithm::algorithm3_1(Graph<Location> & graph, const int& source, const int& dest,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme) {
-  Vertex<Location> *src = graph.findVertex(Location("",source,"nullptr",false));
-  Vertex<Location> *dst = graph.findVertex(Location("",dest,"nullptr",false));
+void Algorithm::algorithm3_1(Graph<Location> * graph, const int& source, const int& dest,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme) {
+  Vertex<Location> *src = graph->findVertex(Location("",source,"nullptr",false));
+  Vertex<Location> *dst = graph->findVertex(Location("",dest,"nullptr",false));
 
   for (int id: avoidNodes) {
-    graph.findVertex(Location("",id,"nullptr",false))->setProcessing(true);
+    graph->findVertex(Location("",id,"nullptr",false))->setProcessing(true);
   }
 
   for (std::pair a: avoidSegments) {
-    Vertex<Location> *v1 = graph.findVertex(Location("",a.first,"nullptr",false));
-    Vertex<Location> *v2 = graph.findVertex(Location("",a.second,"nullptr",false));
+    Vertex<Location> *v1 = graph->findVertex(Location("",a.first,"nullptr",false));
+    Vertex<Location> *v2 = graph->findVertex(Location("",a.second,"nullptr",false));
     for (Edge<Location> *e: v1->getAdj()) {
       Vertex<Location> *w = e->getDest();
       if (w->getInfo().getId() == a.second) {
@@ -410,7 +410,7 @@ void Algorithm::algorithm3_1(Graph<Location> & graph, const int& source, const i
 
   Vertex<Location> *best = nullptr;
   double bestDistance = INF;
-  for (Vertex<Location> *v: graph.getVertexSet()) { //complexidade O(|V|)
+  for (Vertex<Location> *v: graph->getVertexSet()) { //complexidade O(|V|)
     if (v->getInfo().getHasParking()) {
       if (v->getInfo().getPathD() == nullptr || v->getInfo().getPathW() == nullptr ) continue;
       flag_no_path = false;
@@ -478,16 +478,16 @@ void Algorithm::algorithm3_1(Graph<Location> & graph, const int& source, const i
 
 }
 
-void Algorithm::algorithm3_2(Graph<Location> & graph, const int& source, const int& dest,const int & maxWalkTIme){
-    Vertex<Location> *src = graph.findVertex(Location("",source,"nullptr",false));
-    Vertex<Location> *dst = graph.findVertex(Location("",dest,"nullptr",false));
+void Algorithm::algorithm3_2(Graph<Location> * graph, const int& source, const int& dest,const int & maxWalkTIme){
+    Vertex<Location> *src = graph->findVertex(Location("",source,"nullptr",false));
+    Vertex<Location> *dst = graph->findVertex(Location("",dest,"nullptr",false));
 
     Vertex<Location> *best_alternative = nullptr;
     Vertex<Location> *second_best_alternative = nullptr;
     double bestDistance = INF;
     double secondBestDistance = INF;
 
-    for (Vertex<Location> *v: graph.getVertexSet()) { //complexidade O(|V|)
+    for (Vertex<Location> *v: graph->getVertexSet()) { //complexidade O(|V|)
         if (v->getInfo().getHasParking()) {
             if (v->getInfo().getPathD() == nullptr || v->getInfo().getPathW() == nullptr ) continue;
             if (bestDistance > v->getInfo().getDistD() + v->getInfo().getDistW()) {

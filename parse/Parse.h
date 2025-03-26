@@ -39,7 +39,7 @@ class Parse{
 * will be stored
 * @return void
 */
-    void readDistances(Graph<Location> &graph);
+    void readDistances(Graph<Location> * graph);
 
   /**
 * @brief outputs the graph you provided in the terminal
@@ -49,7 +49,7 @@ class Parse{
 *
 * @return void
 */
-    void displayGraph(Graph<Location> &graph);
+    void displayGraph(Graph<Location> * graph);
 
   /**
 * @brief reads the input provided by the user
@@ -88,7 +88,7 @@ class Parse{
 };
 
 
-void Parse::readLocations(Graph<Location> & graph) {
+void Parse::readLocations(Graph<Location> *graph) {
   std::cout << "Enter locations (insert -1 to stop): " << std::endl;
   std::cout << "Location,Id,Code,Parking" << std::endl;
 
@@ -110,12 +110,12 @@ void Parse::readLocations(Graph<Location> & graph) {
     if (parking == "1") hasparking = true;
     else hasparking = false;
 
-    graph.addVertex(Location(location, id, code,hasparking));
+    graph->addVertex(Location(location, id, code,hasparking));
     std::getline(std::cin, line);
   }
 }
 
-void Parse::readDistances(Graph<Location> & graph) {
+void Parse::readDistances(Graph<Location> * graph) {
   std::cout << "Enter distances (insert -1 to stop): " << std::endl;
   std::cout << "Location1,Location2,Driving,Walking" << std::endl;
 
@@ -133,9 +133,9 @@ void Parse::readDistances(Graph<Location> & graph) {
     getline(ss, walking, ',');
 
     if (driving=="X") {
-      graph.addBidirectionalEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), INF, stoi(walking));
+      graph->addBidirectionalEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), INF, stoi(walking));
     }
-    else graph.addBidirectionalEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), stoi(driving), stoi(walking));
+    else graph->addBidirectionalEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), stoi(driving), stoi(walking));
     std::getline(std::cin, line);
   }
 }
@@ -230,9 +230,9 @@ void Parse::display(std::string& mode, int & source, int & dest, int & maxWalkTi
 
 }
 
-void Parse::displayGraph(Graph<Location> &graph) {
+void Parse::displayGraph(Graph<Location> * graph) {
   std::cout << "Graph:" << std::endl;
-  for (Vertex<Location> *vertex : graph.getVertexSet()) {
+  for (Vertex<Location> *vertex : graph->getVertexSet()) {
     std::cout << vertex->getInfo().getName()
     << ","<< vertex->getInfo().getId() << ","<< vertex->getInfo().getCode()
     << ","<< vertex->getInfo().getHasParking()<< std::endl;
