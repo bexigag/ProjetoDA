@@ -27,7 +27,7 @@ class Algorithm{
       Algorithm(){}
     /**
      * @brief chooses the right algorithm accordingly to the input provided
-     * Time complexity: constant
+
      *
      * @param graph the input graph of type Location
      * @param mode string that indicates the mode of the path (driving or driving-walking)

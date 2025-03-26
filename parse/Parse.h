@@ -29,7 +29,7 @@ class Parse{
 * will be stored
 * @return void
 */
-    void readLocations(Graph<Location> &graph);
+    void readLocations(Graph<Location> * graph);
 
   /**
 * @brief Reads the locations provided as input by the

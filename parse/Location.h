@@ -21,8 +21,17 @@ class Location {
    * @return Location
    */
     Location(std::string name, int id, std::string code, bool hasparking): name(name), id(id), code(code), hasparking(hasparking) {}
+
     bool operator == (const Location &other) const {
       return this->id == other.id || this->code == other.code;
+    }
+
+    bool operator == (const int id) const {
+      return this->id == id;
+    }
+
+    bool operator == (const std::string& code) const {
+      return this->code == code;
     }
 
   /**

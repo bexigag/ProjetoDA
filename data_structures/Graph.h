@@ -113,6 +113,18 @@ public:
     * Auxiliary function to find a vertex with a given the content.
     */
     Vertex<T> *findVertex(const T &in) const;
+    Vertex<T> *findVertexById(int id) const {
+        for (auto v : vertexSet)
+            if (v->getInfo() == id)
+                return v;
+        return nullptr;
+    }
+    Vertex<T> *findVertexByCode(std::string code) const {
+        for (auto v : vertexSet)
+            if (v->getInfo() == code)
+                return v;
+        return nullptr;
+    }
     /*
      *  Adds a vertex with a given content or info (in) to a graph (this).
      *  Returns true if successful, and false if a vertex with that content already exists.
