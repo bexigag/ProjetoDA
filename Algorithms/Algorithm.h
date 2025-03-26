@@ -26,7 +26,8 @@ class Algorithm{
      */
       Algorithm(){}
     /**
-     * @brief ...
+     * @brief chooses the right algorithm accordingly to the input provided
+     * Time complexity: constant
      *
      * @param graph the input graph of type Location
      * @param mode string that indicates the mode of the path (driving or driving-walking)
@@ -41,11 +42,18 @@ class Algorithm{
       void runAlgorithm(Graph<Location> & graph, const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments);
     private:
       /**
-     * @brief ...
+     * @brief performs a djikstra in the graph
+     *like it was demonstrated in the previous
+     *lessons that updates the nodes distances
+     *with the minimum distance to a source vertex
+     *and a destination vertex
+     *Time complexity:O((V+E) log V)
      *
      * @param graph the input graph of type Location
-     * @param src source vertex of type Location
+     * @param src source vertex of type Location from
+     * which the djikstra will start
      * @param dst destination vertex of type Location
+     * from which the djikstra will end
      * @param d_w integer that works as an indicator of the mode of the path
      * (if d_w==0 the mode is driving else if d_w==1 the mode is walking)
      * @return void
@@ -53,7 +61,13 @@ class Algorithm{
      void distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Location> *dst , const int d_w);
 
   /**
-      * @brief ...
+      * @brief  Independent Route Planning: this algorithm determines the shortest path
+      * between a source node and a destination node. Besides that,
+      * it also identifies an alternative route knowing that
+      * the two routes share no intermediate nodes or segments, except
+      * for the source and destination, and also the alternative route
+      * is equal to or greater in travel time compared to the primary route.
+      * Time complexity:
       *
       * @param graph the input graph of type Location
       * @param source integer that indicates the id of the source node
@@ -63,21 +77,29 @@ class Algorithm{
      void algorithm2_1(Graph<Location> & graph, const int& source, const int& dest); //not restricted
 
   /**
-    * @brief ...
+    * @brief Restricted Route Planning:  this algorithm determines the shortest path
+    * possible between a source node and a destination node. However, this path as some
+    * restrictions that it must comply (includeNode,avoidNodes and avoidSegments)
+    * Time complexity: O((V+E) log V) dominated by djikstra
     *
     * @param graph the input graph of type Location
     * @param source integer that indicates the id of the source node
     * @param dest integer that indicates the id of the destination node
     * @param includeNode integer that indicates the id of the node that must be included in the path
-    * @param avoidNodes vector of the ids (integers) of the nodes that cannot be included in the path
+    * @param avoidNodes vector of the Ids (integers) of the nodes that cannot be included in the path
     * @param avoidSegments vector of the edges that cannot be included in the path
     * @return void
     */
-
      void algorithm2_2(Graph<Location> & graph, const int& source, const int& dest, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments);
 
   /**
-    * @brief ...
+    * @brief  Best route for driving and walking: shortest path
+    * between a source node and a destination node in which firstly
+    * the path should be done by driving and then stopping at some node
+    * with parking and afterward the path should be done by walking
+    * complying the restrictions that are inserted (avoidNodes,
+    * avoidSegments and maxWalkTime)
+    * Time complexity: O((V+E) log V) dominated by djikstra
     *
     * @param graph the input graph of type Location
     * @param source integer that indicates the id of the source node
@@ -90,7 +112,11 @@ class Algorithm{
      void algorithm3_1(Graph<Location> & graph, const int& source, const int& dest,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme);
 
   /**
-      * @brief ...
+  * @brief Approximate Solution: If no suitable route is found, display a list of suggestions
+      * representing the best feasible alternative routes that approximate user requirements
+      * Besides that, present 2 alternatives, sorted by overall travel time, but always including
+      * a driving and a walking segment
+      * Time complexity: O(V)
       *
       * @param graph the input graph of type Location
       * @param source integer that indicates the id of the source node
@@ -102,6 +128,7 @@ class Algorithm{
 
   /**
     * @brief outputs the ids of the nodes that are included in the path
+    * Time complexity: O(E)
     *
     * @param path stack with the ids of the nodes included in the path
     * @return void
@@ -109,7 +136,10 @@ class Algorithm{
       void output_path(std::stack<int> & path);
 
   /**
-    * @brief ...
+    * @brief resets the isProcessing attribute of the
+    * vertexes of the graph and the isSelected attribute
+    * of the edges
+    * Time complexity: O(VE)
     *
     * @param graph the input graph of type Location
     * @return void
@@ -117,7 +147,9 @@ class Algorithm{
       void resetGraph(Graph<Location> & graph);
 
   /**
-    * @brief ...
+    * @brief resets both the driving and
+    * walking paths (pathW and pathD)
+    * Time complexity: O(V)
     *
     * @param graph the input graph of type Location
     * @return void
@@ -169,6 +201,8 @@ void Algorithm::output_path(std::stack<int> & path) {
 
 void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Location> *dst ,const int d_w){
   MutablePriorityQueue<Vertex<Location>> pq;
+
+  //O(V)
   for (Vertex<Location> *v :graph.getVertexSet()){
     v->setVisited(false);
     v->setDist(INF);
@@ -176,6 +210,7 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
 
   src->setDist(0);
 
+  //O(V)
   for (Vertex<Location> *v :graph.getVertexSet()){
     if (v->isProcessing()) {
       v->setVisited(true);
@@ -190,6 +225,7 @@ void Algorithm::distra(Graph<Location> & graph, Vertex<Location> *src,Vertex<Loc
 
     v->setVisited(true);
     if (v == dst) break;
+    //O(E)
     for (Edge<Location> *e : v->getAdj()){
       Vertex<Location> *u = e->getDest();
       if (u->isProcessing() || e->isSelected()) continue;
@@ -220,7 +256,7 @@ void Algorithm::algorithm2_1(Graph<Location> & graph, const int& source, const i
 
   std::cout << "BestDrivingRoute:";
 
-  distra(graph,src,dst,0);
+  distra(graph,src,dst,0); //O((V+E) log V)
 
   std::stack<int> path;
 
@@ -230,7 +266,7 @@ void Algorithm::algorithm2_1(Graph<Location> & graph, const int& source, const i
   else {
     path.push(dst->getInfo().getId());
     dst = dst->getInfo().getPathD()->getOrig();
-    while (dst != src){
+    while (dst != src){ //O(V)
       Edge<Location> *e = dst->getInfo().getPathD();
       path.push(dst->getInfo().getId());
       dst->setProcessing(true);
@@ -250,7 +286,7 @@ void Algorithm::algorithm2_1(Graph<Location> & graph, const int& source, const i
     std::cout << "none" << std::endl;
   }
   else {
-    while (dst != src){
+    while (dst != src){ //O(V)
       Edge<Location> *e = dst->getInfo().getPathD();
       path.push(dst->getInfo().getId());
       dst = e->getOrig();
@@ -345,6 +381,7 @@ void Algorithm::algorithm3_1(Graph<Location> & graph, const int& source, const i
   for (int id: avoidNodes) {
     graph.findVertex(Location("",id,"nullptr",false))->setProcessing(true);
   }
+
   for (std::pair a: avoidSegments) {
     Vertex<Location> *v1 = graph.findVertex(Location("",a.first,"nullptr",false));
     Vertex<Location> *v2 = graph.findVertex(Location("",a.second,"nullptr",false));
@@ -364,6 +401,7 @@ void Algorithm::algorithm3_1(Graph<Location> & graph, const int& source, const i
     }
   }
 
+  //O((V+E) log V) + O((V+E) log V)
   distra(graph,src,nullptr,0);       //driving
   distra(graph,dst,nullptr,1);   //walking
 

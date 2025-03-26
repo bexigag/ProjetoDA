@@ -42,8 +42,11 @@ class Parse{
     void readDistances(Graph<Location> &graph);
 
   /**
-* @brief outputs the graph in the terminal
+* @brief outputs the graph you provided in the terminal
+* Time complexity: O(VE)
 * @param graph graph of type Location
+*
+*
 * @return void
 */
     void displayGraph(Graph<Location> &graph);
@@ -227,7 +230,6 @@ void Parse::display(std::string& mode, int & source, int & dest, int & maxWalkTi
 
 }
 
-
 void Parse::displayGraph(Graph<Location> &graph) {
   std::cout << "Graph:" << std::endl;
   for (Vertex<Location> *vertex : graph.getVertexSet()) {
@@ -237,8 +239,14 @@ void Parse::displayGraph(Graph<Location> &graph) {
 
     std::cout << "Paths: " << std::endl;
     for (Edge<Location> *e: vertex->getAdj()) {
-      std::cout << e->getDest()->getInfo().getName() << ":" <<
+      if (e->getWeightD()==INF){
+        std::cout << e->getDest()->getInfo().getName() << ":" <<
+        "(no driving) " << e->getWeightW() << "W" << std::endl;
+      }
+      else {
+        std::cout << e->getDest()->getInfo().getName() << ":" <<
         e->getWeightD() << "D " << e->getWeightW() << "W" << std::endl;
+      }
     }
   }
 }

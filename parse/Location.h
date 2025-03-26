@@ -50,7 +50,7 @@ class Location {
     bool getHasParking() const {return hasparking;}
 
   /**
-  * @brief getter of the distw (walking distance);
+  * @brief getter of the distW (walking distance);
   * @return double
   */
     double getDistW() {return distW;}
