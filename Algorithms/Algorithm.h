@@ -373,39 +373,7 @@ void Algorithm::algorithm3_1(Graph<Location> * graph, Vertex<Location> *src,Vert
     }
   }
   else {
-    Vertex<Location> * v;
-    v = best;
-    std::cout << "DrivingRoute:";
-    std::stack<int> path;
-    while (v != src){
-      Edge<Location> *e = v->getInfo().getPathD();
-      path.push(v->getInfo().getId());
-      v = e->getOrig();
-    }
-    path.push(src->getInfo().getId());
-
-    while (path.size() > 1) {
-      std::cout << path.top() << ",";
-      path.pop();
-    }
-    std::cout << path.top()
-    << "(" << best->getInfo().getDistD() << ")" << std::endl;
-    path.pop();
-
-    std::cout << "ParkingNode:";
-    std::cout << best->getInfo().getId() << std::endl;
-
-    std::cout << "WalkingRoute:";
-
-    v = best;
-
-    while (v != dst){
-      Edge<Location> *e = v->getInfo().getPathW();
-      std::cout << v->getInfo().getId() << ",";
-      v = e->getOrig();
-    }
-    std::cout << v->getInfo().getId()<< "(" << best->getInfo().getDistW() << ")" << std::endl;
-    std::cout << "TotalTime:" << bestDistance << std::endl;
+    Outinho::out_3(src, dst, best, bestDistance);
   }
 
 }
@@ -447,71 +415,9 @@ void Algorithm::algorithm3_2(Graph<Location> * graph, Vertex<Location> *src,Vert
     std::cout << std::endl <<"Best alternatives:"<< std::endl;
     std::cout << "Source:" << src->getInfo().getId() << std::endl;
     std::cout << "Destination:" << dst->getInfo().getId() << std::endl;
-    Vertex<Location> * v;
-    v = best_alternative;
-    std::cout << "DrivingRoute:";
-    std::stack<int> path;
-    while (v != src){
-        Edge<Location> *e = v->getInfo().getPathD();
-        path.push(v->getInfo().getId());
-        v = e->getOrig();
-    }
-    path.push(src->getInfo().getId());
 
-    while (path.size() > 1) {
-        std::cout << path.top() << ",";
-        path.pop();
-    }
-    std::cout << path.top()
-    << "(" << best_alternative->getInfo().getDistD() << ")" << std::endl;
-    path.pop();
-
-    std::cout << "ParkingNode:";
-    std::cout << best_alternative->getInfo().getId() << std::endl;
-
-    std::cout << "WalkingRoute:";
-
-    v = best_alternative;
-
-    while (v != dst){
-        Edge<Location> *e = v->getInfo().getPathW();
-        std::cout << v->getInfo().getId() << ",";
-        v = e->getOrig();
-    }
-    std::cout << v->getInfo().getId()<< "(" << best_alternative->getInfo().getDistW() << ")" << std::endl;
-    std::cout << "TotalTime:" << bestDistance << std::endl;
-
-    std::cout << "DrivingRoute:";
-    v = second_best_alternative;
-    while (v != src){
-        Edge<Location> *e = v->getInfo().getPathD();
-        path.push(v->getInfo().getId());
-        v = e->getOrig();
-    }
-    path.push(src->getInfo().getId());
-
-    while (path.size() > 1) {
-        std::cout << path.top() << ",";
-        path.pop();
-    }
-    std::cout << path.top()
-    << "(" << second_best_alternative->getInfo().getDistD() << ")" << std::endl;
-    path.pop();
-
-    std::cout << "ParkingNode:";
-    std::cout << second_best_alternative->getInfo().getId() << std::endl;
-
-    std::cout << "WalkingRoute:";
-
-    v = second_best_alternative;
-
-    while (v != dst){
-        Edge<Location> *e = v->getInfo().getPathW();
-        std::cout << v->getInfo().getId() << ",";
-        v = e->getOrig();
-    }
-    std::cout << v->getInfo().getId()<< "(" << second_best_alternative->getInfo().getDistW() << ")" << std::endl;
-    std::cout << "TotalTime:" << secondBestDistance << std::endl;
+    Outinho::out_3(src, dst, best_alternative, bestDistance);
+    Outinho::out_3(src, dst, second_best_alternative, secondBestDistance);
 }
 
 #endif //ALGORITHM_H

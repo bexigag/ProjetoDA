@@ -13,8 +13,7 @@ class Outinho{
     Outinho();
     void static out_2_1( Vertex<Location> *src, Vertex<Location> *dst);
     void static out_2_2( Vertex<Location> *src, Vertex<Location> *dst, bool comma);
-    void static out_3_1(Vertex<Location> *src, Vertex<Location> *dst);
-    void static out_3_2( Vertex<Location> *src, Vertex<Location> *dst);
+    void static out_3(Vertex<Location> *src,Vertex<Location> *dst, Vertex<Location> * best,double bestDistance);
   private:
     void static output_path(std::stack<int> & path);
 };
@@ -57,7 +56,9 @@ void Outinho::out_2_2(Vertex<Location> *src,Vertex<Location> *dst, bool comma){
         std::cout << "none" << std::endl;
     }
     else {
-        v = v->getInfo().getPathD()->getOrig();
+        if (comma) {
+            v = v->getInfo().getPathD()->getOrig();
+        }
         while (v != src) {
             Edge<Location> *e = v->getInfo().getPathD();
             path.push(v->getInfo().getId());
@@ -75,10 +76,40 @@ void Outinho::out_2_2(Vertex<Location> *src,Vertex<Location> *dst, bool comma){
     }
 }
 
-void Outinho::out_3_1( Vertex<Location> *src,Vertex<Location> *dst){
+void Outinho::out_3( Vertex<Location> *src,Vertex<Location> *dst, Vertex<Location> * best,double bestDistance ){
+    Vertex<Location> * v;
+    v = best;
+    std::cout << "DrivingRoute:";
+    std::stack<int> path;
+    while (v != src){
+        Edge<Location> *e = v->getInfo().getPathD();
+        path.push(v->getInfo().getId());
+        v = e->getOrig();
+    }
+    path.push(src->getInfo().getId());
 
-}
-void Outinho::out_3_2( Vertex<Location> *src,Vertex<Location> *dst){
+    while (path.size() > 1) {
+        std::cout << path.top() << ",";
+        path.pop();
+    }
+    std::cout << path.top()
+    << "(" << best->getInfo().getDistD() << ")" << std::endl;
+    path.pop();
 
+    std::cout << "ParkingNode:";
+    std::cout << best->getInfo().getId() << std::endl;
+
+    std::cout << "WalkingRoute:";
+
+    v = best;
+
+    while (v != dst){
+        Edge<Location> *e = v->getInfo().getPathW();
+        std::cout << v->getInfo().getId() << ",";
+        v = e->getOrig();
+    }
+    std::cout << v->getInfo().getId()<< "(" << best->getInfo().getDistW() << ")" << std::endl;
+    std::cout << "TotalTime:" << bestDistance << std::endl;
 }
+
 #endif //OUTINHO_H
