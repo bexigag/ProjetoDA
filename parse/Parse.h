@@ -133,9 +133,9 @@ void Parse::readDistances(Graph<Location> * graph) {
     getline(ss, walking, ',');
 
     if (driving=="X") {
-      graph->addBidirectionalEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), INF, stoi(walking));
+      graph->addBidirectionalEdgeByCode(code1, code2, INF, stoi(walking));
     }
-    else graph->addBidirectionalEdge(Location(" ",-1,code1,false), Location(" ",-1,code2,false), stoi(driving), stoi(walking));
+    else graph->addBidirectionalEdgeByCode(code1, code2, stoi(driving), stoi(walking));
     std::getline(std::cin, line);
   }
 }

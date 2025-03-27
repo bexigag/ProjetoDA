@@ -36,6 +36,7 @@ private:
     int includeNode = -1; //can be  empty
     int maxWalkTime = -1;
     Graph<Location> * graph;
+
     Parse parse;
     Algorithm algorithm;
 };
@@ -82,7 +83,9 @@ void Menu::run() {
             avoidSegments.clear();
         }
         else if (option == 6) {
-            delete graph;
+            if (graph != nullptr) {
+                delete graph;
+            }
             graph = new Graph<Location>();
         }
         else if (option == 7) {

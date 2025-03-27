@@ -125,6 +125,17 @@ public:
                 return v;
         return nullptr;
     }
+    bool addBidirectionalEdgeByCode(const std::string &sourc, const std::string &dest, double driving, double walking) {
+        auto v1 = findVertexByCode(sourc);
+        auto v2 = findVertexByCode(dest);
+        if (v1 == nullptr || v2 == nullptr)
+            return false;
+        auto e1 = v1->addEdge(v2,  driving, walking);
+        auto e2 = v2->addEdge(v1, driving, walking);
+        e1->setReverse(e2);
+        e2->setReverse(e1);
+        return true;
+    }
     /*
      *  Adds a vertex with a given content or info (in) to a graph (this).
      *  Returns true if successful, and false if a vertex with that content already exists.
