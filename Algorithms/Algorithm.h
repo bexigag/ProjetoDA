@@ -11,6 +11,7 @@
 #include "../parse/Location.h"
 #include "../data_structures/MutablePriorityQueue.h"
 #include "Outinho.h"
+#include "Utils.h"
 #include <limits>
 #include <stack>
 
@@ -42,26 +43,6 @@ class Algorithm{
      */
       void runAlgorithm(Graph<Location> * graph, const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments);
     private:
-
-      /**
-     * @brief performs a djikstra in the graph
-     *like it was demonstrated in the previous
-     *lessons that updates the nodes distances
-     *with the minimum distance to a source vertex
-     *and a destination vertex
-     *Time complexity:O((V+E) log V)
-     *
-     * @param graph the input graph of type Location
-     * @param src source vertex of type Location from
-     * which the djikstra will start
-     * @param dst destination vertex of type Location
-     * from which the djikstra will end
-     * @param d_w integer that works as an indicator of the mode of the path
-     * (if d_w==0 the mode is driving else if d_w==1 the mode is walking)
-     * @return void
-     */
-     void distra(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst , const int d_w);
-
   /**
       * @brief  Independent Route Planning: this algorithm determines the shortest path
       * between a source node and a destination node. Besides that,
@@ -128,38 +109,6 @@ class Algorithm{
       */
     void algorithm3_2(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst);
 
-  /**
-    * @brief outputs the ids of the nodes that are included in the path
-    * Time complexity: O(E)
-    *
-    * @param path stack with the ids of the nodes included in the path
-    * @return void
-    */
-      void output_path(std::stack<int> & path);
-
-  /**
-    * @brief resets the isProcessing attribute of the
-    * vertexes of the graph and the isSelected attribute
-    * of the edges
-    * Time complexity: O(V+E)
-    *
-    * @param graph the input graph of type Location
-    * @return void
-    */
-      void resetGraph(Graph<Location> * graph);
-
-  /**
-    * @brief resets both the driving and
-    * walking paths (pathW and pathD)
-    * Time complexity: O(V)
-    *
-    * @param graph the input graph of type Location
-    * @return void
-    */
-      void resetPaths(Graph<Location> * graph);
-
-
-      void restrict(Graph<Location> * graph, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments);
 };
 
 void Algorithm::runAlgorithm(Graph<Location> * graph,const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments){
@@ -180,120 +129,23 @@ void Algorithm::runAlgorithm(Graph<Location> * graph,const std::string& mode,con
   else if (mode == "driving-walking") {
     algorithm3_1(graph,src,dst,avoidNodes,avoidSegments,maxWalkTime);
   }
-  resetGraph(graph);
+  Utils::resetGraph(graph);
 
 }
 
-void Algorithm::restrict(Graph<Location> * graph, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments) {
-  for (int id: avoidNodes) {
-    graph->findVertexById(id)->setProcessing(true);
-  }
-  for (std::pair a: avoidSegments) {
-    Vertex<Location> *v1 = graph->findVertexById(a.first);
-    Vertex<Location> *v2 = graph->findVertexById(a.second);
-    for (Edge<Location> *e: v1->getAdj()) {
-      Vertex<Location> *w = e->getDest();
-      if (w->getInfo().getId() == a.second) {
-        e->setSelected(true);
-        break;
-      }
-    }
-    for (Edge<Location> *e: v2->getAdj()) {
-      Vertex<Location> *w = e->getDest();
-      if (w->getInfo().getId() == a.first) {
-        e->setSelected(true);
-        break;
-      }
-    }
-  }
-}
-
-
-void Algorithm::resetPaths(Graph<Location> * graph) {
-  for (Vertex<Location> *v :graph->getVertexSet()) {
-    v->getInfo().setPath(nullptr,2);
-  }
-}
-
-void Algorithm::resetGraph(Graph<Location> * graph) {
-  for (Vertex<Location> *v :graph->getVertexSet()) {
-    v->setProcessing(false);
-    v->getInfo().setPath(nullptr,2);
-    for (Edge<Location> *e : v->getAdj()) {
-      e->setSelected(false);
-    }
-  }
-}
-
-void Algorithm::output_path(std::stack<int> & path) {
-    while (!path.empty()) {
-      std::cout << path.top();
-      path.pop();
-      if (!path.empty()){std::cout << ",";}
-    }
-}
-
-void Algorithm::distra(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst ,const int d_w){
-  MutablePriorityQueue<Vertex<Location>> pq;
-
-  //O(V)
-  for (Vertex<Location> *v :graph->getVertexSet()){
-    v->setVisited(false);
-    v->setDist(INF);
-  }
-
-  src->setDist(0);
-
-  //O(V)
-  for (Vertex<Location> *v :graph->getVertexSet()){
-    if (v->isProcessing()) {
-      v->setVisited(true);
-    }
-    else pq.insert(v);
-  }
-
-  while (!pq.empty()){
-    Vertex<Location> *v = pq.extractMin();
-
-    v->getInfo().setDist(v->getDist(), d_w);
-
-    v->setVisited(true);
-    if (v == dst) break;
-    //O(E)
-    for (Edge<Location> *e : v->getAdj()){
-      Vertex<Location> *u = e->getDest();
-      if (u->isProcessing() || e->isSelected()) continue;
-      if (d_w == 0) {
-        if (!u->isVisited() && e->getWeightD() + v->getDist() < u->getDist()){
-          u->setDist(v->getDist() + e->getWeightD());
-          u->getInfo().setPath(e,d_w);
-          pq.decreaseKey(u);
-        }
-      }
-      else {
-        if (!u->isVisited() && e->getWeightW() + v->getDist() < u->getDist()){
-          u->setDist(v->getDist() + e->getWeightW());
-          u->getInfo().setPath(e,d_w);
-          pq.decreaseKey(u);
-        }
-      }
-
-    }
-  }
-}
 
 void Algorithm::algorithm2_1(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst) {
   std::cout << "BestDrivingRoute:";
 
-  distra(graph,src,dst,0); //O((V+E) log V)
+  Utils::distra(graph,src,dst,0); //O((V+E) log V)
 
   Outinho::out_2_1(src,dst);
 
 
   std::cout << "AlternativeDrivingRoute:";
 
-  resetPaths(graph);
-  distra(graph,src,dst,0);
+  Utils::resetPaths(graph);
+  Utils::distra(graph,src,dst,0);
 
   Outinho::out_2_1(src,dst);
 
@@ -303,7 +155,7 @@ void Algorithm::algorithm2_1(Graph<Location> * graph, Vertex<Location> *src,Vert
 
 void Algorithm::algorithm2_2(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments) {
 
-  restrict(graph,avoidNodes,avoidSegments);
+  Utils::restrict(graph,avoidNodes,avoidSegments);
 
   std::cout << "RestrictedDrivingRoute:";
 
@@ -314,15 +166,14 @@ void Algorithm::algorithm2_2(Graph<Location> * graph, Vertex<Location> *src,Vert
   if (includeNode != -1) {
     Vertex<Location> *firstDst = graph->findVertexById(includeNode);
     secondSrc = firstDst;
-
-    distra(graph,src,firstDst,0);
+    Utils::distra(graph,src,firstDst,0);
 
     distance += firstDst->getInfo().getDistD();
 
     Outinho::out_2_2(src, firstDst,true);
   }
 
-  distra(graph,secondSrc,dst,0);
+  Utils::distra(graph,secondSrc,dst,0);
   distance += dst->getInfo().getDistD();
 
   Outinho::out_2_2(secondSrc,dst,false);
@@ -331,11 +182,11 @@ void Algorithm::algorithm2_2(Graph<Location> * graph, Vertex<Location> *src,Vert
 
 void Algorithm::algorithm3_1(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme) {
 
-  restrict(graph,avoidNodes,avoidSegments);
+  Utils::restrict(graph,avoidNodes,avoidSegments);
 
   //O((V+E) log V) + O((V+E) log V)
-  distra(graph,src,nullptr,0);       //driving
-  distra(graph,dst,nullptr,1);   //walking
+  Utils::distra(graph,src,nullptr,0);       //driving
+  Utils::distra(graph,dst,nullptr,1);   //walking
 
   bool flag_max = true;
   bool flag_no_path = true;
