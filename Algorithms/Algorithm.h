@@ -9,7 +9,6 @@
 #include <vector>
 #include "../data_structures/Graph.h"
 #include "../parse/Location.h"
-#include "../data_structures/MutablePriorityQueue.h"
 #include "Outinho.h"
 #include "Utils.h"
 #include <limits>
@@ -138,9 +137,7 @@ void Algorithm::algorithm2_1(Graph<Location> * graph, Vertex<Location> *src,Vert
   std::cout << "BestDrivingRoute:";
 
   Utils::distra(graph,src,dst,0); //O((V+E) log V)
-
   Outinho::out_2_1(src,dst);
-
 
   std::cout << "AlternativeDrivingRoute:";
 
@@ -148,10 +145,7 @@ void Algorithm::algorithm2_1(Graph<Location> * graph, Vertex<Location> *src,Vert
   Utils::distra(graph,src,dst,0);
 
   Outinho::out_2_1(src,dst);
-
 }
-
-
 
 void Algorithm::algorithm2_2(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments) {
 

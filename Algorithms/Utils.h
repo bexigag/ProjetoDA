@@ -6,8 +6,6 @@
 #define UTILS_H
 
 #include "Algorithm.h"
-<<<<<<< HEAD
-=======
 
 class Utils{
   public:
@@ -31,47 +29,7 @@ class Utils{
    * @return void
    */
     static void distra(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst , const int d_w);
->>>>>>> origin/utils
 
-class Utils{
-  public:
-    Utils();
-
-    /**
-      * @brief outputs the ids of the nodes that are included in the path
-      * Time complexity: O(E)
-      *
-      * @param path stack with the ids of the nodes included in the path
-      * @return void
-      */
-    void output_path(std::stack<int> & path);
-
-    /**
-      * @brief resets the isProcessing attribute of the
-      * vertexes of the graph and the isSelected attribute
-      * of the edges
-      * Time complexity: O(V+E)
-      *
-      * @param graph the input graph of type Location
-      * @return void
-      */
-    void resetGraph(Graph<Location> * graph);
-
-    /**
-      * @brief resets both the driving and
-      * walking paths (pathW and pathD)
-      * Time complexity: O(V)
-      *
-      * @param graph the input graph of type Location
-      * @return void
-      */
-    void resetPaths(Graph<Location> * graph);
-
-
-    void restrict(Graph<Location> * graph, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments);
-
-
-};
 
     /**
       * @brief resets the isProcessing attribute of the
@@ -100,10 +58,6 @@ class Utils{
     * the avoidNodes and avoidSegments parameters
     *
     * @param graph the input graph of type Location
-    * @param avoidNodes vector<int> that has the Ids of
-    * the nodes that must be avoided in the path
-    * @param avoidSegments vector<pair<int,int>> of the
-    * edges that must be avoided in the path
     * @return void
     */
   static void restrict(Graph<Location> * graph, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments);
@@ -127,9 +81,6 @@ void Utils::resetGraph(Graph<Location> * graph) {
     }
   }
 }
-
-
-
 
 
 void Utils::distra(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst ,const int d_w){
