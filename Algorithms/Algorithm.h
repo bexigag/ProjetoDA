@@ -10,6 +10,7 @@
 #include "../data_structures/Graph.h"
 #include "../parse/Location.h"
 #include "../data_structures/MutablePriorityQueue.h"
+#include "Outinho.h"
 #include <limits>
 #include <stack>
 
@@ -41,6 +42,7 @@ class Algorithm{
      */
       void runAlgorithm(Graph<Location> * graph, const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments);
     private:
+
       /**
      * @brief performs a djikstra in the graph
      *like it was demonstrated in the previous
@@ -281,49 +283,20 @@ void Algorithm::distra(Graph<Location> * graph, Vertex<Location> *src,Vertex<Loc
 }
 
 void Algorithm::algorithm2_1(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst) {
-  Vertex<Location> *dst1 = dst;
-
   std::cout << "BestDrivingRoute:";
 
   distra(graph,src,dst,0); //O((V+E) log V)
 
-  std::stack<int> path;
+  Outinho::out_2_1(src,dst);
 
-  if (dst->getInfo().getPathD() == nullptr) {
-    std::cout << "none" << std::endl;
-  }
-  else {
-    path.push(dst->getInfo().getId());
-    dst = dst->getInfo().getPathD()->getOrig();
-    while (dst != src){ //O(V)
-      Edge<Location> *e = dst->getInfo().getPathD();
-      path.push(dst->getInfo().getId());
-      dst->setProcessing(true);
-      dst = e->getOrig();
-    }
-    path.push(src->getInfo().getId());
-    output_path(path);
-    std::cout<< "(" << dst1->getInfo().getDistD() << ")"<< std::endl;
-  }
-
-  dst = dst1;
 
   std::cout << "AlternativeDrivingRoute:";
+
   resetPaths(graph);
   distra(graph,src,dst,0);
-  if (dst->getInfo().getPathD() == nullptr) {
-    std::cout << "none" << std::endl;
-  }
-  else {
-    while (dst != src){ //O(V)
-      Edge<Location> *e = dst->getInfo().getPathD();
-      path.push(dst->getInfo().getId());
-      dst = e->getOrig();
-    }
-    path.push(src->getInfo().getId());
-    output_path(path);
-    std::cout<< "(" << dst1->getInfo().getDistD() << ")"<< std::endl;
-  }
+
+  Outinho::out_2_1(src,dst);
+
 }
 
 
@@ -341,44 +314,19 @@ void Algorithm::algorithm2_2(Graph<Location> * graph, Vertex<Location> *src,Vert
   if (includeNode != -1) {
     Vertex<Location> *firstDst = graph->findVertexById(includeNode);
     secondSrc = firstDst;
-    distra(graph,src,firstDst,0);
-    distance += firstDst->getInfo().getDistD();
-    if (dst->getInfo().getPathD() == nullptr) {
-      std::cout << "none" << std::endl;
-    }
-    else {
-      firstDst = firstDst->getInfo().getPathD()->getOrig();
-      while (firstDst != src) {
-        Edge<Location> *e = firstDst->getInfo().getPathD();
-        path.push(firstDst->getInfo().getId());
-        firstDst = e->getOrig();
-      }
-      path.push(src->getInfo().getId());
 
-      while (!path.empty()) {
-        std::cout << path.top() << ",";
-        path.pop();
-      }
-    }
+    distra(graph,src,firstDst,0);
+
+    distance += firstDst->getInfo().getDistD();
+
+    Outinho::out_2_2(src, firstDst,true);
   }
 
   distra(graph,secondSrc,dst,0);
+  distance += dst->getInfo().getDistD();
 
-  if (dst->getInfo().getPathD() == nullptr) {
-    std::cout << "none" << std::endl;
-  }
-  else {
-    distance += dst->getInfo().getDistD();
-    while (dst != secondSrc){
-      Edge<Location> *e = dst->getInfo().getPathD();
-      path.push(dst->getInfo().getId());
-      dst = e->getOrig();
-    }
-    path.push(secondSrc->getInfo().getId());
-
-    output_path(path);
-    std::cout<< "(" << distance << ")"<< std::endl;
-  }
+  Outinho::out_2_2(secondSrc,dst,false);
+  std::cout<< "(" << distance << ")"<< std::endl;
 }
 
 void Algorithm::algorithm3_1(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme) {
