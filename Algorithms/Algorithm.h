@@ -157,6 +157,7 @@ class Algorithm{
       void resetPaths(Graph<Location> * graph);
 
 
+      void restrict(Graph<Location> * graph, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments);
 };
 
 void Algorithm::runAlgorithm(Graph<Location> * graph,const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments){
@@ -180,6 +181,31 @@ void Algorithm::runAlgorithm(Graph<Location> * graph,const std::string& mode,con
   resetGraph(graph);
 
 }
+
+void Algorithm::restrict(Graph<Location> * graph, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments) {
+  for (int id: avoidNodes) {
+    graph->findVertexById(id)->setProcessing(true);
+  }
+  for (std::pair a: avoidSegments) {
+    Vertex<Location> *v1 = graph->findVertexById(a.first);
+    Vertex<Location> *v2 = graph->findVertexById(a.second);
+    for (Edge<Location> *e: v1->getAdj()) {
+      Vertex<Location> *w = e->getDest();
+      if (w->getInfo().getId() == a.second) {
+        e->setSelected(true);
+        break;
+      }
+    }
+    for (Edge<Location> *e: v2->getAdj()) {
+      Vertex<Location> *w = e->getDest();
+      if (w->getInfo().getId() == a.first) {
+        e->setSelected(true);
+        break;
+      }
+    }
+  }
+}
+
 
 void Algorithm::resetPaths(Graph<Location> * graph) {
   for (Vertex<Location> *v :graph->getVertexSet()) {
@@ -304,27 +330,7 @@ void Algorithm::algorithm2_1(Graph<Location> * graph, Vertex<Location> *src,Vert
 
 void Algorithm::algorithm2_2(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments) {
 
-  for (int id: avoidNodes) {
-    graph->findVertexById(id)->setProcessing(true);
-  }
-  for (std::pair a: avoidSegments) {
-    Vertex<Location> *v1 = graph->findVertexById(a.first);
-    Vertex<Location> *v2 = graph->findVertexById(a.second);
-    for (Edge<Location> *e: v1->getAdj()) {
-      Vertex<Location> *w = e->getDest();
-      if (w->getInfo().getId() == a.second) {
-        e->setSelected(true);
-        break;
-      }
-    }
-    for (Edge<Location> *e: v2->getAdj()) {
-      Vertex<Location> *w = e->getDest();
-      if (w->getInfo().getId() == a.first) {
-        e->setSelected(true);
-        break;
-      }
-    }
-  }
+  restrict(graph,avoidNodes,avoidSegments);
 
   std::cout << "RestrictedDrivingRoute:";
 
@@ -377,28 +383,7 @@ void Algorithm::algorithm2_2(Graph<Location> * graph, Vertex<Location> *src,Vert
 
 void Algorithm::algorithm3_1(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme) {
 
-  for (int id: avoidNodes) {
-    graph->findVertexById(id)->setProcessing(true);
-  }
-
-  for (std::pair a: avoidSegments) {
-    Vertex<Location> *v1 = graph->findVertexById(a.first);
-    Vertex<Location> *v2 = graph->findVertexById(a.second);
-    for (Edge<Location> *e: v1->getAdj()) {
-      Vertex<Location> *w = e->getDest();
-      if (w->getInfo().getId() == a.second) {
-        e->setSelected(true);
-        break;
-      }
-    }
-    for (Edge<Location> *e: v2->getAdj()) {
-      Vertex<Location> *w = e->getDest();
-      if (w->getInfo().getId() == a.first) {
-        e->setSelected(true);
-        break;
-      }
-    }
-  }
+  restrict(graph,avoidNodes,avoidSegments);
 
   //O((V+E) log V) + O((V+E) log V)
   distra(graph,src,nullptr,0);       //driving
