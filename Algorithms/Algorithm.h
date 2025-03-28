@@ -106,7 +106,8 @@ class Algorithm{
       * @param maxWalkTIme integer indicating the max walk time of the path
       * @return void
       */
-    void algorithm3_2(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst);
+  void algorithm3_2_No_Walk(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst);
+  void algorithm3_2_No_Path(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst, const int & maxWalkTIme);
 
 };
 
@@ -206,24 +207,28 @@ void Algorithm::algorithm3_1(Graph<Location> * graph, Vertex<Location> *src,Vert
   }
 
   if (flag_max || flag_no_path) {
-    std::cout << "DrivingRoute:none" << std::endl;
+    std::cout << std::endl<< "DrivingRoute:none" << std::endl;
     std::cout << "ParkingNode:none" << std::endl;
     std::cout << "WalkingRoute:none" << std::endl;
     std::cout << "TotalTime:" << std::endl;
-    if (flag_no_path)
-      std::cout << "No path FOUND" << std::endl;
+    if (flag_no_path) {
+      std::cout << "Message:No path FOUND with driving and then walking" << std::endl;
+      Utils::resetGraph(graph);
+      algorithm3_2_No_Path(graph, src, dst, maxWalkTIme);
+    }
     else{
       std::cout << "Message:No possible route with max. walking time of " << maxWalkTIme <<" minutes." << std::endl;
-      algorithm3_2(graph,src,dst);
+      algorithm3_2_No_Walk(graph,src,dst);
     }
   }
   else {
     Outinho::out_3(src, dst, best, bestDistance);
   }
-
 }
 
-void Algorithm::algorithm3_2(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst){
+void Algorithm::algorithm3_2_No_Walk(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst){
+    std::cout <<std::endl<<  "    Without MaxWalkTime    " << std::endl;
+
     Vertex<Location> *best_alternative = nullptr;
     Vertex<Location> *second_best_alternative = nullptr;
     double bestDistance = INF;
@@ -263,6 +268,75 @@ void Algorithm::algorithm3_2(Graph<Location> * graph, Vertex<Location> *src,Vert
 
     Outinho::out_3(src, dst, best_alternative, bestDistance);
     Outinho::out_3(src, dst, second_best_alternative, secondBestDistance);
+}
+
+void Algorithm::algorithm3_2_No_Path(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst, const int& maxWalkTIme){
+    std::cout <<std::endl<<  "     Without restrictions    " << std::endl;
+
+    //O((V+E) log V) + O((V+E) log V)
+    Utils::distra(graph,src,nullptr,0);       //driving
+    Utils::distra(graph,dst,nullptr,1);   //walking
+
+    Vertex<Location> *best_alternative = nullptr;
+    Vertex<Location> *second_best_alternative = nullptr;
+    double bestDistance = INF;
+    double secondBestDistance = INF;
+
+    bool flag_max = true;
+    bool flag_no_path = true;
+
+    for (Vertex<Location> *v: graph->getVertexSet()) { //complexidade O(|V|)
+        if (v->getInfo().getHasParking()) {
+            if (v->getInfo().getPathD() == nullptr || v->getInfo().getPathW() == nullptr ) continue;
+            flag_no_path = false;
+            if (v->getInfo().getDistW() > maxWalkTIme) continue;
+            flag_max = false;
+            if (bestDistance > v->getInfo().getDistD() + v->getInfo().getDistW()) {
+                second_best_alternative = best_alternative;
+                secondBestDistance = bestDistance;
+                bestDistance = v->getInfo().getDistD() + v->getInfo().getDistW();
+                best_alternative = v;
+            }
+            else if (bestDistance == v->getInfo().getDistD() + v->getInfo().getDistW()) {
+                if (best_alternative->getInfo().getDistW() < v->getInfo().getDistW()) {
+                    second_best_alternative = best_alternative;
+                    secondBestDistance = bestDistance;
+                    best_alternative = v;
+                }
+            }
+            else if (secondBestDistance > v->getInfo().getDistD() + v->getInfo().getDistW()) {
+              secondBestDistance = v->getInfo().getDistD() + v->getInfo().getDistW();
+              second_best_alternative = v;
+            }
+            else if (secondBestDistance == v->getInfo().getDistD() + v->getInfo().getDistW()) {
+              if (second_best_alternative->getInfo().getDistW() < v->getInfo().getDistW()) {
+                second_best_alternative = v;
+              }
+            }
+        }
+    }
+
+  if (flag_max || flag_no_path) {
+    std::cout<< std::endl << "DrivingRoute:none" << std::endl;
+    std::cout << "ParkingNode:none" << std::endl;
+    std::cout << "WalkingRoute:none" << std::endl;
+    std::cout << "TotalTime:" << std::endl;
+    if (flag_no_path) {
+      std::cout << "Message:No path FOUND with driving and then walking" << std::endl;
+    }
+    else{
+      std::cout << "Message:No possible route with max. walking time of " << maxWalkTIme <<" minutes." << std::endl;
+      algorithm3_2_No_Walk(graph,src,dst);
+    }
+  }
+  else {
+    std::cout << std::endl <<"Best alternatives:"<< std::endl;
+    std::cout << "Source:" << src->getInfo().getId() << std::endl;
+    std::cout << "Destination:" << dst->getInfo().getId() << std::endl;
+
+    Outinho::out_3(src, dst, best_alternative, bestDistance);
+    Outinho::out_3(src, dst, second_best_alternative, secondBestDistance);
+  }
 }
 
 #endif //ALGORITHM_H
