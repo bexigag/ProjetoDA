@@ -84,7 +84,7 @@ class Parse{
 * edges that can't appear in the path
 * @return void
 */
-    void display(std::string& mode,int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments);
+    void displayInput(std::string& mode,int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments);
 };
 
 
@@ -197,7 +197,7 @@ void Parse::readInput(std::string& mode,int & source, int & dest, int & maxWalkT
 
 }
 
-void Parse::display(std::string& mode, int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes,
+void Parse::displayInput(std::string& mode, int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes,
   std::vector<std::pair<int,int>> &avoidSegments) {
   std::cout << "These are your input configurations: " << std::endl;
   std::cout << "Mode:" << mode << std::endl;

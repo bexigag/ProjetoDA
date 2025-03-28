@@ -35,6 +35,7 @@ private:
     vector<pair<int,int>> avoidSegments; //can be empty
     int includeNode = -1; //can be  empty
     int maxWalkTime = -1;
+
     Graph<Location> * graph;
 
     Parse parse;
@@ -66,7 +67,7 @@ void Menu::run() {
             parse.readInput(mode, source,dest,maxWalkTime,includeNode,avoidNodes,avoidSegments);
         }
         else if (option == 2) {
-            parse.display(mode, source,dest,maxWalkTime,includeNode,avoidNodes,avoidSegments);
+            parse.displayInput(mode, source,dest,maxWalkTime,includeNode,avoidNodes,avoidSegments);
         }
         else if (option == 3) {
             parse.displayGraph(graph);
