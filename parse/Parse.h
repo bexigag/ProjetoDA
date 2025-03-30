@@ -144,7 +144,7 @@ void Parse::readDistances(Graph<Location> * graph) {
 void Parse::readInput(std::string& mode,int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments) {
 
   std::cout << "Enter input (insert -1 to stop): " << std::endl;
-  std::cout << "Mode:driving\nSource:<id>\nDestination:<id>\nAvoidNodes:<id>,<id>,...\nAvoidSegments:(id,id),(id,id),..\nIncludeNode:<id>\nMaxWalkTime:<int>" << std::endl;
+  std::cout << "Mode:driving/driving-walking\nSource:<id>\nDestination:<id>\nAvoidNodes:<id>,<id>,...\nAvoidSegments:(id,id),(id,id),..\nIncludeNode:<id>\nMaxWalkTime:<int>" << std::endl;
 
   std::string line;
   std::cin.ignore();
