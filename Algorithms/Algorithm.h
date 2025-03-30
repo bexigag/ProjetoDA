@@ -49,7 +49,7 @@ class Algorithm{
       * the two routes share no intermediate nodes or segments, except
       * for the source and destination, and also the alternative route
       * is equal to or greater in travel time compared to the primary route.
-      * Time complexity:
+      * Time complexity: O((V+E)logV)
       *
       * @param graph the input graph of type Location
       * @param source integer that indicates the id of the source node

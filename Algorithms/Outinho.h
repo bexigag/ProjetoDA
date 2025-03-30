@@ -77,6 +77,11 @@ void Outinho::out_2_2(Vertex<Location> *src,Vertex<Location> *dst, bool comma){
 }
 
 void Outinho::out_3( Vertex<Location> *src,Vertex<Location> *dst, Vertex<Location> * best,double bestDistance ){
+    if (best==nullptr) {
+        std::cout << std::endl <<"No more possible alternatives"<< std::endl;
+        std::cout << std::endl;
+        return;
+    }
     Vertex<Location> * v;
     v = best;
     std::cout << "DrivingRoute:";
