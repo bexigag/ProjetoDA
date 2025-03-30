@@ -107,6 +107,20 @@ class Algorithm{
       * @return void
       */
   void algorithm3_2_No_Walk(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst);
+
+  /**
+  * @brief Approximate Solution: If no suitable route is found, display a list of suggestions
+      * representing the best feasible alternative routes that approximate user requirements
+      * Besides that, present 2 alternatives, sorted by overall travel time, but always including
+      * a driving and a walking segment
+      * Time complexity: O((V+E) log V) dominated by djikstra
+      *
+      * @param graph the input graph of type Location
+      * @param source integer that indicates the id of the source node
+      * @param dest integer that indicates the id of the destination node
+      * @param maxWalkTIme integer indicating the max walk time of the path
+      * @return void
+      */
   void algorithm3_2_No_Path(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst, const int & maxWalkTIme);
 
 };
