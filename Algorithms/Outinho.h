@@ -11,20 +11,37 @@
 class Outinho{
   public:
     Outinho();
+
+    /**
+   * @brief outputs to the terminal the output for algorithm 2_1
+   * Time complexity: O(V)
+   *
+   * @param src initial vertex
+   * @param dst final vertex
+   */
     void static out_2_1( Vertex<Location> *src, Vertex<Location> *dst);
+
+    /**
+   * @brief outputs to the terminal the output for algorithm 2_2
+   * Time complexity: O(V)
+   *
+   * @param src initial vertex
+   * @param dst final vertex
+   * @param comma if true the output has always a comma between ids
+   */
     void static out_2_2( Vertex<Location> *src, Vertex<Location> *dst, bool comma);
+
+    /**
+  * @brief outputs to the terminal the output for algorithm 3 (3_1 and 3_2)
+  * Time complexity: O(V)
+  *
+  * @param src initial vertex
+  * @param dst final vertex
+  * @param bestDistance best distance found, first driving then walking
+  */
     void static out_3(Vertex<Location> *src,Vertex<Location> *dst, Vertex<Location> * best,double bestDistance);
-  private:
-    void static output_path(std::stack<int> & path);
 };
 
-void Outinho::output_path(std::stack<int> & path) {
-    while (!path.empty()) {
-        std::cout << path.top();
-        path.pop();
-        if (!path.empty()){std::cout << ",";}
-    }
-}
 
 void Outinho::out_2_1( Vertex<Location> *src, Vertex<Location> *dst){
     std::stack<int> path;
@@ -43,7 +60,11 @@ void Outinho::out_2_1( Vertex<Location> *src, Vertex<Location> *dst){
             v = e->getOrig();
         }
         path.push(src->getInfo().getId());
-        output_path(path);
+        while (!path.empty()) {
+            std::cout << path.top();
+            path.pop();
+            if (!path.empty()){std::cout << ",";}
+        }
         std::cout<< "(" << dst->getInfo().getDistD() << ")"<< std::endl;
     }
 }

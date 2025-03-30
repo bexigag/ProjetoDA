@@ -13,8 +13,7 @@ using namespace std;
 class Menu{
 public:
     /**
-* @brief empty constructor of the Menu class
-* @return Menu
+* @brief constructor of the Menu class, initialize a new Graph<Location>
 */
     Menu() {
         graph = new Graph<Location>();
@@ -22,23 +21,55 @@ public:
 
 
     /**
-* @brief function that allows the program to run
-* @return void
+* @brief function that allows the program to run and start main loop of interface
 */
     void run();
 
 private:
+    /**
+    * @brief string that indicates the mode
+* of the path (driving or driving-walking)
+*/
     string mode = " ";
+
+    /**
+  * @brief int id of the source node
+*/
     int source = -1;
+
+    /**
+  * @brief int id of the destination node
+*/
     int dest = -1;
+
+    /**
+    * @brief vector<int> that has the Ids of
+* the nodes that can't be present in the path
+*/
     vector<int> avoidNodes; //can be empty
+
+    /**
+    * @brief vector<pair<int,int>> that has the
+* edges that can't appear in the path
+*/
     vector<pair<int,int>> avoidSegments; //can be empty
+
+    /**
+    * @brief int id of the node that must
+* be included in the path
+*/
     int includeNode = -1; //can be  empty
+
+    /**
+  * @brief int max time of walking permitted (used for environmentally-friendly route)
+*/
     int maxWalkTime = -1;
+
 
     Graph<Location> * graph;
 
     Parse parse;
+
     Algorithm algorithm;
 };
 

@@ -38,7 +38,6 @@ class Algorithm{
      * @param includeNode integer that indicates the id of the node that must be included in the path
      * @param avoidNodes vector of the ids (integers) of the nodes that cannot be included in the path
      * @param avoidSegments vector of the edges that cannot be included in the path
-     * @return void
      */
       void runAlgorithm(Graph<Location> * graph, const std::string& mode,const int & source,const int & dest,const int & maxWalkTime,const int & includeNode,const std::vector<int> &avoidNodes,const std::vector<std::pair<int,int>> &avoidSegments);
     private:
@@ -49,12 +48,11 @@ class Algorithm{
       * the two routes share no intermediate nodes or segments, except
       * for the source and destination, and also the alternative route
       * is equal to or greater in travel time compared to the primary route.
-      * Time complexity: O((V+E)logV)
+      * Time complexity: O((V+E)logV) dominated by djikstra
       *
       * @param graph the input graph of type Location
-      * @param source integer that indicates the id of the source node
-      * @param dest integer that indicates the id of the destination node
-      * @return void
+      * @param src integer that indicates the id of the source node
+      * @param dst integer that indicates the id of the destination node
       */
      void algorithm2_1(Graph<Location> * graph, Vertex<Location> *src, Vertex<Location> *dst); //not restricted
 
@@ -65,12 +63,11 @@ class Algorithm{
     * Time complexity: O((V+E) log V) dominated by djikstra
     *
     * @param graph the input graph of type Location
-    * @param source integer that indicates the id of the source node
-    * @param dest integer that indicates the id of the destination node
+    * @param src integer that indicates the id of the source node
+    * @param dst integer that indicates the id of the destination node
     * @param includeNode integer that indicates the id of the node that must be included in the path
     * @param avoidNodes vector of the Ids (integers) of the nodes that cannot be included in the path
     * @param avoidSegments vector of the edges that cannot be included in the path
-    * @return void
     */
      void algorithm2_2(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst, const int& includeNode, const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments);
 
@@ -84,42 +81,39 @@ class Algorithm{
     * Time complexity: O((V+E) log V) dominated by djikstra
     *
     * @param graph the input graph of type Location
-    * @param source integer that indicates the id of the source node
-    * @param dest integer that indicates the id of the destination node
+    * @param src integer that indicates the id of the source node
+    * @param dst integer that indicates the id of the destination node
     * @param avoidNodes vector of the ids (integers) of the nodes that cannot be included in the path
     * @param avoidSegments vector of the edges that cannot be included in the path
     * @param maxWalkTIme integer indicating the max walk time of the path
-    * @return void
     */
      void algorithm3_1(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst,const std::vector<int>& avoidNodes, const std::vector<std::pair<int,int>> &avoidSegments,const int & maxWalkTIme);
 
   /**
-  * @brief Approximate Solution: If no suitable route is found, display a list of suggestions
-      * representing the best feasible alternative routes that approximate user requirements
+  * @brief Approximate Solution: If no suitable route is found because of the limit walk time, display a list of suggestions
+      * representing the best feasible alternative routes that approximate user requirements (without WalkMaxTime limit)
       * Besides that, present 2 alternatives, sorted by overall travel time, but always including
       * a driving and a walking segment
       * Time complexity: O(V)
       *
       * @param graph the input graph of type Location
-      * @param source integer that indicates the id of the source node
-      * @param dest integer that indicates the id of the destination node
-      * @param maxWalkTIme integer indicating the max walk time of the path
-      * @return void
+      * @param src integer that indicates the id of the source node
+      * @param dst integer that indicates the id of the destination node
       */
   void algorithm3_2_No_Walk(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst);
 
   /**
-  * @brief Approximate Solution: If no suitable route is found, display a list of suggestions
-      * representing the best feasible alternative routes that approximate user requirements
+  * @brief Approximate Solution: If no suitable route is found because there is no parking node available
+  * (no path driving until park or no path walking from park to dst), display a list of suggestions
+      * representing the best feasible alternative routes that approximate user requirements (without restrictions, avoid nodes and avoid segments)
       * Besides that, present 2 alternatives, sorted by overall travel time, but always including
       * a driving and a walking segment
       * Time complexity: O((V+E) log V) dominated by djikstra
       *
       * @param graph the input graph of type Location
-      * @param source integer that indicates the id of the source node
-      * @param dest integer that indicates the id of the destination node
+      * @param src integer that indicates the id of the source node
+      * @param dst integer that indicates the id of the destination node
       * @param maxWalkTIme integer indicating the max walk time of the path
-      * @return void
       */
   void algorithm3_2_No_Path(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst, const int & maxWalkTIme);
 

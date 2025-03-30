@@ -12,20 +12,19 @@ class Utils{
     Utils();
 
     /**
-   * @brief performs a djikstra in the graph
+   * @brief performs a dijkstra in the graph
    *like it was demonstrated in the previous
    *lessons that updates the nodes distances
    *with the minimum distance to a source vertex
-   *and a destination vertex
    *Time complexity:O((V+E) log V)
    *
    * @param graph the input graph of type Location
    * @param src source vertex of type Location from
-   * which the djikstra will start
+   * which the dijkstra will start
    * @param dst destination vertex of type Location
-   * from which the djikstra will end
-   * @param d_w integer that works as an indicator of the mode of the path
-   * (if d_w==0 the mode is driving else if d_w==1 the mode is walking)
+   * from which the dijkstra will end (if nullptr, dijkstra goes to all nodes)
+   * @param d_w integer that works as an indicator of the distances we want to use in the path
+   * (if d_w==0 the weight is driving else if d_w==1 the weight is walking)
    * @return void
    */
     static void distra(Graph<Location> * graph, Vertex<Location> *src,Vertex<Location> *dst , const int d_w);
@@ -55,7 +54,7 @@ class Utils{
 
   /**
     * @brief restricts the path to respect
-    * the avoidNodes and avoidSegments parameters
+    * the avoidNodes and avoidSegments parameters (makes isProcessing to true and isSelected to true)
     *
     * @param graph the input graph of type Location
     * @return void

@@ -17,7 +17,6 @@ class Parse{
   public:
   /**
 * @brief empty constructor of the Parse class
-* @return Parse
 */
     Parse(){}
 
@@ -27,7 +26,6 @@ class Parse{
 * sequence: Location,Id,Code,Parking
 * @param graph graph of type Location in which the input data
 * will be stored
-* @return void
 */
     void readLocations(Graph<Location> * graph);
 
@@ -37,17 +35,15 @@ class Parse{
 * sequence: Location1,Location2,Driving,Walking
 * @param graph graph of type Location in which the input data
 * will be stored
-* @return void
 */
     void readDistances(Graph<Location> * graph);
 
   /**
 * @brief outputs the graph you provided in the terminal
-* Time complexity: O(VE)
+* Time complexity: O(V+E)
 * @param graph graph of type Location
 *
 *
-* @return void
 */
     void displayGraph(Graph<Location> * graph);
 
@@ -65,7 +61,6 @@ class Parse{
 * the nodes that can't be present in the path
 * @param avoidSegments vector<pair<int,int>> that has the
 * edges that can't appear in the path
-* @return void
 */
     void readInput(std::string& mode, int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments);
 
@@ -73,8 +68,8 @@ class Parse{
 * @brief displays on the terminal the input configurations you provided
 * @param mode string that indicates the mode
 * of the path (driving or driving-walking)
-* @param source int Id of the source node
-* @param dest int Id of the destination node
+* @param source int id of the source node
+* @param dest int id of the destination node
 * @param maxWalkTime int max time of walking permitted
 * @param includeNode int id of the node that must
 * be included in the path
@@ -82,7 +77,6 @@ class Parse{
 * the nodes that can't be present in the path
 * @param avoidSegments vector<pair<int,int>> that has the
 * edges that can't appear in the path
-* @return void
 */
     void displayInput(std::string& mode,int & source, int & dest, int & maxWalkTime, int & includeNode, std::vector<int> &avoidNodes, std::vector<std::pair<int,int>> &avoidSegments);
 };
