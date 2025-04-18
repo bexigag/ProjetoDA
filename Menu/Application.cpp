@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Menu.h"
-#include "../parse/location.h"
 
 using namespace std;
 
