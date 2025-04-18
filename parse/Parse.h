@@ -13,6 +13,13 @@
 #include "location.h"
 #include <limits>
 
+
+/**
+ * @class Parse
+ * @brief This class reads the dataset to the graph,
+ * reads the input, and can output both to the terminal
+ *
+ */
 class Parse{
   public:
   /**

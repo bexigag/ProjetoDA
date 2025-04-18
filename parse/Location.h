@@ -9,6 +9,13 @@
 #include <string>
 #include "../data_structures/Graph.h"
 
+/**
+ * @class Location
+ * @brief This class keeps data about the location,
+ * it also can be used to keep track of walk and driving distances/paths,
+ * used for the 3_2 algorithm
+ *
+ */
 class Location {
   public:
   /**
@@ -20,6 +27,11 @@ class Location {
    * @param hasparking boolean that indicates if the location has or doesn't have parking
    */
     Location(std::string name, int id, std::string code, bool hasparking): name(name), id(id), code(code), hasparking(hasparking) {}
+
+
+  bool operator == (const Location other) const {
+      return this->id == other.getId() || this->code == other.getCode();
+    }
 
   /**
 * @brief Location comparator with id, used for running algorithms (the source and destination are id)
