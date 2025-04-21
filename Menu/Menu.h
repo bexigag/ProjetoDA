@@ -8,6 +8,7 @@
 #include "../Algorithms/Algorithm.h"
 #include "../parse/Pallet.h"
 #include "../Algorithms/Brute_force.h"
+#include "../Algorithms/Dynamic.h"
 
 using namespace std;
 
@@ -64,6 +65,9 @@ void Menu::run() {
         else if (option == 4) {
             Brute_force brute_force;
             brute_force.run(capacity, n_pallets, pallets);
+
+            Dynamic dynamic;
+            dynamic.run(capacity, n_pallets, pallets);
         }
         else if (option == 5) {
             Parse::clearInput(capacity, n_pallets, pallets);

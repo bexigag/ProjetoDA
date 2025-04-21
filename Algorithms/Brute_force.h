@@ -26,10 +26,10 @@ class Brute_force{
 void Brute_force::run(int capacity, int n_pallets, Pallet * pallets){
 
 
-    cout << "Brute force approach result: ";
+    cout << "Optimal solution using brute force approach: " << endl;
 
     if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
-        cout << "error" << endl;
+        cout << "no possible result" << endl;
         return;
     }
 
@@ -70,10 +70,10 @@ void Brute_force::run(int capacity, int n_pallets, Pallet * pallets){
         else cout << "no possible result" << endl;
     }
 
-    cout << "The pallets used are: ";
+    cout << "The pallets used are: (";
     for (int a=0; a<n_pallets; a++){
         if (a==last_id){
-            cout << last_id+1 << endl;
+            cout << last_id+1 << ")" << endl;
             break;
         }
         if (usedItems[a]) cout << a+1 << "," ;
