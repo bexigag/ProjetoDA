@@ -70,15 +70,26 @@ void Brute_force::run(int capacity, int n_pallets, Pallet * pallets){
         else cout << "no possible result" << endl;
     }
 
+    int sum_weights=0;
+    int sum_profits=0;
+
     cout << "The pallets used are: (";
     for (int a=0; a<n_pallets; a++){
         if (a==last_id){
             cout << last_id+1 << ")" << endl;
+            sum_weights+=pallets[a].weight;
+            sum_profits+=pallets[a].profit;
             break;
         }
-        if (usedItems[a]) cout << a+1 << "," ;
+        if (usedItems[a]) {
+            cout << a+1 << "," ;
+            sum_weights+=pallets[a].weight;
+            sum_profits+=pallets[a].profit;
+        }
     }
 
+    cout << "The total weight used is: " << sum_weights << endl;
+    cout << "The total profit used is: " << sum_profits << endl;
 }
 
 #endif //BRUTE_FORCE_H
