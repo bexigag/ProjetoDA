@@ -80,7 +80,7 @@ void Dynamic::run(int capacity, int n_pallets, Pallet * pallets){
     int sum_profits=0;
 
     cout << "The pallets used are: (";
-    for (int a=0; a<n_pallets; a++){
+    for (unsigned int a=0; a<n_pallets; a++){
         if (a==last_id){
             cout << last_id+1 << ")" << endl;
             sum_weights+=pallets[a].weight;
@@ -94,7 +94,7 @@ void Dynamic::run(int capacity, int n_pallets, Pallet * pallets){
         }
     }
     cout << "The total weight used is: " << sum_weights << endl;
-    cout << "The total profit used is: " << sum_profits << endl;
+    cout << "The best profit is: " << sum_profits << endl;
 }
 
 #endif //DYNAMIC_H

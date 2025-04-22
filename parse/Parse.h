@@ -73,7 +73,7 @@ namespace Parse{
         }
     }
 
-    void clearInput(int & capacity,int & n_pallets, Pallet * pallets) {
+    void clearInput(int & capacity,int & n_pallets, Pallet *& pallets) {
         capacity = -1;
         n_pallets = -1;
         delete[] pallets;
