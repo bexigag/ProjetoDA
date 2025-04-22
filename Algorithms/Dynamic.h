@@ -44,9 +44,7 @@ void Dynamic::run(int capacity, int n_pallets, Pallet * pallets){
             else {
                 val[i][j] = val[i-1][j];
             }
-            //cout << val[i][j] << " ";
         }
-        //cout << endl;
     }
 
     bool usedItems[n_pallets];

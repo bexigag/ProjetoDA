@@ -63,11 +63,26 @@ void Menu::run() {
         else if (option == 3) {
         }
         else if (option == 4) {
-            Brute_force brute_force;
-            brute_force.run(capacity, n_pallets, pallets);
+            int option;
+            cout << "1 Run Brute Force aproach" << endl;
+            cout << "2 Run Dynamic programming aproach" << endl;
+            cout << "3 Run Greedy aproach" << endl;
+            cout << "4 Run Integer Linear programming aproach" << endl;
+            cout << "Choose an option:" << endl;
+            cin >> option;
+            if (option == 1) {
+                Brute_force brute_force;
+                brute_force.run(capacity, n_pallets, pallets);
+            }
+            else if (option == 2) {
+                Dynamic dynamic;
+                dynamic.run(capacity, n_pallets, pallets);
+            }
+            else {
+                cout << "invalid input" << endl;
+            }
 
-            Dynamic dynamic;
-            dynamic.run(capacity, n_pallets, pallets);
+
         }
         else if (option == 5) {
             Parse::clearInput(capacity, n_pallets, pallets);
