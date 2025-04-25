@@ -80,7 +80,7 @@ namespace Parse{
         pallets = nullptr;
     }
 
-};
+}
 
 
 #endif //PARSE_H

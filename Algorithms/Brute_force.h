@@ -16,13 +16,62 @@
 
 using namespace std;
 
-class Brute_force{
-  public:
-    Brute_force(){}
-    void run(int capacity, int n_pallets, Pallet * pallets);
-};
+namespace Brute_force {
+    void run(int capacity, int n_pallets, Pallet *pallets) {
+
+        cout << "Optimal solution using brute force approach: " << endl;
+
+        if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
+            cout << "no possible result" << endl;
+            return;
+        }
+
+        bool tempUsedItems[n_pallets];
+        bool usedItems[n_pallets];
+        unsigned int res = 0;
+        for (unsigned int i = 0; i < n_pallets; i++) {
+            tempUsedItems[i] = 0;
+        }
+
+        bool flag = true;
+        while (flag) {
+            flag = false;
+            for (unsigned int i = 0; i < n_pallets; i++) {
+                if (tempUsedItems[i] == 0) {
+                    tempUsedItems[i] = 1;
+                    for (unsigned int j = 0; j < i; j++) {
+                        tempUsedItems[j] = 0;
+                    }
+                    flag = true;
+                    break;
+                }
+            }
+
+            unsigned int sum_profits = 0;
+            unsigned int sum_weights = 0;
+            for (unsigned int i = 0; i < n_pallets; i++) {
+                if (tempUsedItems[i]) {
+                    sum_weights += pallets[i].weight;
+                    sum_profits += pallets[i].profit;
+                }
+            }
+            if (sum_weights <= capacity) {
+                if (sum_profits > res) {
+                    res = sum_profits;
+                    for (unsigned int i = 0; i < n_pallets; i++) {
+                        usedItems[i] = tempUsedItems[i];
+                    }
+                }
+            }
+        }
+
+        Outinho::terminal_output(n_pallets,pallets,usedItems);
+
+    }
+}
 
 
+/*
 void Brute_force::run(int capacity, int n_pallets, Pallet * pallets){
 
 
@@ -35,9 +84,9 @@ void Brute_force::run(int capacity, int n_pallets, Pallet * pallets){
 
     bool usedItems[n_pallets];
     int best_profit=0;
-    unsigned long int times=1;
+    bool temp_usedItems[n_pallets];
 
-    for (unsigned long int a = 0; a < (times<<n_pallets); a++) {  // 2^n vezes (todas as combinações possíveis)
+    while () {  // 2^n vezes (todas as combinações possíveis)
         int sum_profits=0;
         int sum_weight=0;
         bool temp_usedItems[n_pallets];
@@ -100,6 +149,6 @@ void Brute_force::run(int capacity, int n_pallets, Pallet * pallets){
 
     cout << "The total weight used is: " << sum_weights << endl;
     cout << "The best profit is: " << sum_profits << endl;
-}
+}*/
 
 #endif //BRUTE_FORCE_H

@@ -9,6 +9,9 @@
 #include "../parse/Pallet.h"
 #include "../Algorithms/Brute_force.h"
 #include "../Algorithms/Dynamic.h"
+#include "../Algorithms/Greedy.h"
+#include "../Algorithms/Outinho.h"
+
 
 using namespace std;
 
@@ -71,12 +74,13 @@ void Menu::run() {
             cout << "Choose an option:" << endl;
             cin >> option;
             if (option == 1) {
-                Brute_force brute_force;
-                brute_force.run(capacity, n_pallets, pallets);
+                Brute_force::run(capacity, n_pallets, pallets);
             }
             else if (option == 2) {
-                Dynamic dynamic;
-                dynamic.run(capacity, n_pallets, pallets);
+                Dynamic::run(capacity, n_pallets, pallets);
+            }
+            else if (option == 3) {
+                Greedy::run(capacity, n_pallets, pallets);
             }
             else {
                 cout << "invalid input" << endl;
