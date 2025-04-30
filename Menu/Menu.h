@@ -75,6 +75,7 @@ void Menu::run() {
             cin >> option;
             if (option == 1) {
                 Brute_force::run(capacity, n_pallets, pallets);
+                Brute_force::run_backtracking(capacity, n_pallets, pallets);
             }
             else if (option == 2) {
                 Dynamic::run(capacity, n_pallets, pallets);

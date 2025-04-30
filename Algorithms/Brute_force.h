@@ -47,6 +47,10 @@ namespace Brute_force {
                 }
             }
 
+            cout << "[";
+            for (unsigned int i = 0; i < n_pallets; i++) {cout << tempUsedItems[i] << ",";}
+            cout << "]" << endl;
+
             unsigned int sum_profits = 0;
             unsigned int sum_weights = 0;
             for (unsigned int i = 0; i < n_pallets; i++) {
@@ -63,10 +67,69 @@ namespace Brute_force {
                     }
                 }
             }
+
         }
 
         Outinho::terminal_output(n_pallets,pallets,usedItems);
 
+    }
+
+    void recursiveBacktracking(unsigned int k, int capacity, int n_pallets, Pallet *pallets, bool tempUsedItems[],
+        unsigned int sum_weight, unsigned int sum_profit, unsigned int & best_profit, unsigned int & best_weight,bool bestUsedItems[]) {
+
+        if (tempUsedItems[k]) {
+            sum_weight += pallets[k].weight;
+            sum_profit += pallets[k].profit;
+        }
+
+        if (sum_weight>capacity or k == n_pallets) {
+            return;
+        }
+
+        k++;
+
+        if (sum_profit>best_profit) {
+            best_profit = sum_profit;
+            best_weight = sum_weight;
+            for (unsigned int i = 0; i < n_pallets; i++) {
+                bestUsedItems[i] = tempUsedItems[i];
+            }
+        }
+
+        tempUsedItems[k] = 0;
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems);
+
+        tempUsedItems[k] = 1;
+
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems);
+
+    }
+
+    void run_backtracking(int capacity, int n_pallets, Pallet *pallets) {
+        cout << "Optimal solution using brute force with backtracking approach: " << endl;
+
+        if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
+            cout << "no possible result" << endl;
+            return;
+        }
+
+        bool tempUsedItems[n_pallets];
+        bool usedItems[n_pallets];
+        unsigned int res = 0;
+        for (unsigned int i = 0; i < n_pallets; i++) {
+            tempUsedItems[i] = false;
+        }
+        unsigned int sum_weight=0, sum_profit=0, best_profit=0,best_weight=0,k=0;
+
+        tempUsedItems[k] = 0;
+
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems);
+
+        tempUsedItems[k] = 1;
+
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems);
+
+        Outinho::terminal_output(n_pallets,pallets,usedItems);
     }
 }
 
