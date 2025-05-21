@@ -7,9 +7,11 @@
 
 #include "../data_structures/Graph.h"
 #include "../parse/Pallet.h"
+#include <chrono>
 
 namespace Outinho {
-    void terminal_output(int n_pallets, Pallet *pallets, bool usedItems[]) {
+    void terminal_output(int n_pallets, Pallet *pallets, bool usedItems[], std::chrono::time_point<std::chrono::high_resolution_clock> start, std::chrono::time_point<std::chrono::high_resolution_clock> end) {
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
         unsigned int last_id=-1;
         for (unsigned int a=n_pallets-1; a>0; a--){
             if (usedItems[a]){
@@ -42,6 +44,7 @@ namespace Outinho {
         }
         cout << "The total weight used is: " << sum_weights << endl;
         cout << "The best profit is: " << sum_profits << endl;
+        std::cout << "Tempo de execução: " << duration.count() << " microseconds" << std::endl;
     }
 }
 

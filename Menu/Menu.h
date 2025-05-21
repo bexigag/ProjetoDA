@@ -61,8 +61,6 @@ void Menu::run() {
         else if (option == 2) {
             Parse::displayInput(capacity, n_pallets, pallets);
         }
-        else if (option == 2) {
-        }
         else if (option == 3) {
         }
         else if (option == 4) {
@@ -74,20 +72,34 @@ void Menu::run() {
             cout << "Choose an option:" << endl;
             cin >> option;
             if (option == 1) {
-                Brute_force::run(capacity, n_pallets, pallets);
+                //Brute_force::run(capacity, n_pallets, pallets);
                 Brute_force::run_backtracking(capacity, n_pallets, pallets);
             }
             else if (option == 2) {
                 Dynamic::run(capacity, n_pallets, pallets);
             }
             else if (option == 3) {
-                Greedy::run(capacity, n_pallets, pallets);
+                int optionGreedy;
+                cout << "1 Run Greedy by Density" << endl;
+                cout << "2 Run Greedy by Value" << endl;
+
+                cin >> optionGreedy;
+                if (optionGreedy == 1) {
+                    Greedy::runDensity(capacity, n_pallets, pallets);
+                }
+                else if (optionGreedy == 2) {
+                    Greedy::runValue(capacity, n_pallets, pallets);
+                }
+                else if (optionGreedy == 3) {
+                    Greedy::run2Aproximation(capacity, n_pallets, pallets);
+                }
+            }
+            else if (option == 4) {
+
             }
             else {
                 cout << "invalid input" << endl;
             }
-
-
         }
         else if (option == 5) {
             Parse::clearInput(capacity, n_pallets, pallets);

@@ -10,6 +10,7 @@
 #include "../data_structures/Graph.h"
 #include "../parse/Pallet.h"
 #include "Outinho.h"
+#include <chrono>
 #include "Utils.h"
 #include <limits>
 #include <stack>
@@ -18,6 +19,7 @@ using namespace std;
 
 namespace Brute_force {
     void run(int capacity, int n_pallets, Pallet *pallets) {
+        auto start = std::chrono::high_resolution_clock::now();
 
         cout << "Optimal solution using brute force approach: " << endl;
 
@@ -70,23 +72,25 @@ namespace Brute_force {
 
         }
 
-        Outinho::terminal_output(n_pallets,pallets,usedItems);
+        auto end = std::chrono::high_resolution_clock::now();
+
+        Outinho::terminal_output(n_pallets,pallets,usedItems, start, end);
 
     }
 
     void recursiveBacktracking(unsigned int k, int capacity, int n_pallets, Pallet *pallets, bool tempUsedItems[],
         unsigned int sum_weight, unsigned int sum_profit, unsigned int & best_profit, unsigned int & best_weight,bool bestUsedItems[]) {
 
+
         if (tempUsedItems[k]) {
             sum_weight += pallets[k].weight;
             sum_profit += pallets[k].profit;
         }
 
-        if (sum_weight>capacity or k == n_pallets) {
+        if (sum_weight>capacity ) {
             return;
         }
 
-        k++;
 
         if (sum_profit>best_profit) {
             best_profit = sum_profit;
@@ -96,16 +100,23 @@ namespace Brute_force {
             }
         }
 
-        tempUsedItems[k] = 0;
-        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems);
+        k++;
+        if (k == n_pallets) return;
+
 
         tempUsedItems[k] = 1;
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems);
+
+        tempUsedItems[k] = 0;
 
         recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems);
 
     }
 
     void run_backtracking(int capacity, int n_pallets, Pallet *pallets) {
+
+        auto start = std::chrono::high_resolution_clock::now();
+
         cout << "Optimal solution using brute force with backtracking approach: " << endl;
 
         if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
@@ -115,103 +126,25 @@ namespace Brute_force {
 
         bool tempUsedItems[n_pallets];
         bool usedItems[n_pallets];
-        unsigned int res = 0;
         for (unsigned int i = 0; i < n_pallets; i++) {
             tempUsedItems[i] = false;
         }
         unsigned int sum_weight=0, sum_profit=0, best_profit=0,best_weight=0,k=0;
 
-        tempUsedItems[k] = 0;
-
-        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems);
-
         tempUsedItems[k] = 1;
 
         recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems);
 
-        Outinho::terminal_output(n_pallets,pallets,usedItems);
+        tempUsedItems[k] = 0;
+
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems);
+
+        auto end = std::chrono::high_resolution_clock::now();
+
+        Outinho::terminal_output(n_pallets,pallets,usedItems,start, end);
     }
 }
 
 
-/*
-void Brute_force::run(int capacity, int n_pallets, Pallet * pallets){
-
-
-    cout << "Optimal solution using brute force approach: " << endl;
-
-    if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
-        cout << "no possible result" << endl;
-        return;
-    }
-
-    bool usedItems[n_pallets];
-    int best_profit=0;
-    bool temp_usedItems[n_pallets];
-
-    while () {  // 2^n vezes (todas as combinações possíveis)
-        int sum_profits=0;
-        int sum_weight=0;
-        bool temp_usedItems[n_pallets];
-        for (unsigned int b = 0; b < n_pallets; b++) {temp_usedItems[b] = false;} //reset the array
-
-        for (unsigned long int b = 0; b < n_pallets; b++) {
-            if (a & (1 << b)) {
-                temp_usedItems[b] = true;
-                sum_profits += pallets[b].profit;
-                sum_weight += pallets[b].weight;
-            }
-
-        }
-        cout << "sum_profit=" << sum_profits << " sum_weight=" << sum_weight << endl;
-        if (sum_weight<=capacity) {
-            //cout << "sum_profit=" << sum_profits << " sum_weight=" << sum_weight << endl;
-            cout << "best_profit: " << best_profit << endl;
-            if (best_profit<sum_profits) {
-                best_profit=sum_profits;
-                for (unsigned int b = 0; b < n_pallets; b++) {
-                    usedItems[b] = false;
-                    usedItems[b] = temp_usedItems[b];
-                }
-            }
-        }
-    }
-
-
-
-    unsigned int last_id=-1;
-    for (unsigned int a=n_pallets-1; a>0; a--){
-        if (usedItems[a]){
-            last_id=a;
-            break;
-        }
-    }
-
-    if (last_id==-1) {
-        if (usedItems[0]) last_id=0;
-        else cout << "no possible result" << endl;
-    }
-
-    int sum_weights=0;
-    int sum_profits=0;
-
-    cout << "The pallets used are: (";
-    for (unsigned int a=0; a<n_pallets; a++){
-        if (a==last_id){
-            cout << last_id+1 << ")" << endl;
-            sum_weights+=pallets[a].weight;
-            sum_profits+=pallets[a].profit;
-            break;
-        }
-        if (usedItems[a]) {
-            cout << a+1 << "," ;
-            sum_weights+=pallets[a].weight;
-            sum_profits+=pallets[a].profit;
-        }
-    }
-
-    cout << "The total weight used is: " << sum_weights << endl;
-    cout << "The best profit is: " << sum_profits << endl;
-}*/
 
 #endif //BRUTE_FORCE_H

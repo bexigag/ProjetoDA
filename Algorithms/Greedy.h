@@ -10,6 +10,7 @@
 #include "../data_structures/Graph.h"
 #include "../parse/Pallet.h"
 #include "Outinho.h"
+#include <chrono>
 #include "Utils.h"
 #include <limits>
 #include <stack>
@@ -18,7 +19,9 @@
 using namespace std;
 
 namespace Greedy {
-    void run(int capacity, int n_pallets, Pallet * pallets){
+    void runDensity(int capacity, int n_pallets, Pallet * pallets){
+
+        auto start = std::chrono::high_resolution_clock::now();
 
         cout << "Optimal solution using Greedy approach: "<< endl;
 
@@ -44,8 +47,58 @@ namespace Greedy {
             }
         }
 
-        Outinho::terminal_output(n_pallets,pallets,usedItems);
+        auto end = std::chrono::high_resolution_clock::now();
+
+        Outinho::terminal_output(n_pallets,pallets,usedItems,start, end);
     }
+
+    void runValue(int capacity, int n_pallets, Pallet * pallets){
+        auto start = std::chrono::high_resolution_clock::now();
+
+        cout << "Optimal solution using Greedy approach: "<< endl;
+
+        if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
+            cout << "no possible result" << endl;
+            return;
+        }
+
+        bool usedItems[n_pallets]={false};
+        vector<Pallet> v;
+        for (unsigned int i = 0; i < n_pallets; i++) {
+            v.push_back(pallets[i]);
+        }
+
+        sort(v.begin(), v.end(), [](const Pallet& p1, const Pallet& p2) {return p1.profit > p2.profit;});
+        int weight = 0;
+        int res = 0;
+        for (unsigned int i = 0; i < n_pallets; i++) {
+            if (weight + v[i].weight<= capacity) {
+                weight += v[i].weight;
+                res += v[i].profit;
+                usedItems[v[i].id - 1] = true;
+            }
+        }
+
+        auto end = std::chrono::high_resolution_clock::now();
+
+        Outinho::terminal_output(n_pallets,pallets,usedItems,start, end);
+    }
+
+    void run2Aproximation(int capacity, int n_pallets, Pallet * pallets){
+
+        cout << "Optimal solution using 2 Aproximation (Best of Greedy) approach: "<< endl;
+
+        if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
+            cout << "no possible result" << endl;
+            return;
+        }
+
+
+
+        runValue(capacity, n_pallets, pallets);
+        runDensity(capacity, n_pallets, pallets);
+    }
+
 }
 
 #endif //GREEDY_H
