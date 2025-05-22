@@ -53,6 +53,12 @@ namespace Dynamic {
         unsigned int j=capacity;
 
         while (index>0) {
+            auto current = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
+            if (duration>=std::chrono::seconds(10)) {
+                cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
+                return;
+            }
             if (j>=pallets[index-1].weight and max>val[index-1][j]) {
                 max = val[index-1][j-pallets[index-1].weight];
                 usedItems[index-1] = true;
@@ -66,55 +72,6 @@ namespace Dynamic {
         Outinho::terminal_output(n_pallets,pallets,usedItems,start, end);
     }
 
-    void runOptimized(int capacity, int n_pallets, Pallet * pallets){
-
-        cout << "Optimal solution using optimized dynamic programming approach: "<< endl;
-
-        if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
-            cout << "no possible result" << endl;
-            return;
-        }
-
-        unsigned int val[2][capacity+1];
-        int pred[n_pallets] {-1};
-        bool usedItems[n_pallets] {false};
-
-        int item = -1;
-        unsigned int i;
-
-        while (item <= n_pallets) {
-            i = (item + 1) % 2;
-            for (unsigned int j = 0; j <= capacity; j++) {
-                if (item==-1 || j==0) {
-                    val[i][j] = 0;
-                }
-                else if (i == 1) {
-                    if (j>=pallets[item].weight) {
-                        if (val[i-1][j-pallets[item].weight]+pallets[item].profit > val[i-1][j]) {
-                            val[i][j] = val[i-1][j-pallets[item].weight]+pallets[item].profit;
-                            if (j-pallets[item].weight > 0) {
-                                pred[item] = item - 1;
-                            }
-                        }
-                    }
-                    else {
-                        val[i][j] = val[i-1][j];
-                    }
-                }
-                else {
-                    if (j>=pallets[item].weight) {
-                        val[i][j] = max(val[i+1][j], val[i+1][j-pallets[item].weight]+pallets[item].profit);
-                    }
-                    else {
-                        val[i][j] = val[i+1][j];
-                    }
-                }
-            }
-            i++;
-        }
-
-        //Outinho::terminal_output(n_pallets,pallets,usedItems);
-    }
 }
 
 #endif //DYNAMIC_H

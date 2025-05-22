@@ -72,8 +72,18 @@ void Menu::run() {
             cout << "Choose an option:" << endl;
             cin >> option;
             if (option == 1) {
-                //Brute_force::run(capacity, n_pallets, pallets);
-                Brute_force::run_backtracking(capacity, n_pallets, pallets);
+                int optionbruteforce;
+                cout << "1 Run Brute Force" << endl;
+                cout << "2 Run Brute Force with Backtracking" << endl;
+
+                cin >> optionbruteforce;
+
+                if (optionbruteforce == 1) {
+                    Brute_force::run(capacity, n_pallets, pallets);
+                }
+                else if (optionbruteforce == 2) {
+                    Brute_force::run_backtracking(capacity, n_pallets, pallets);
+                }
             }
             else if (option == 2) {
                 Dynamic::run(capacity, n_pallets, pallets);

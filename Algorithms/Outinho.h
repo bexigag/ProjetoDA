@@ -25,6 +25,7 @@ namespace Outinho {
             else cout << "no possible result" << endl;
         }
 
+
         int sum_weights=0;
         int sum_profits=0;
 
@@ -44,7 +45,7 @@ namespace Outinho {
         }
         cout << "The total weight used is: " << sum_weights << endl;
         cout << "The best profit is: " << sum_profits << endl;
-        std::cout << "Tempo de execução: " << duration.count() << " microseconds" << std::endl;
+        std::cout << "Execution time: " << duration.count() << " microseconds" << std::endl;
     }
 }
 
