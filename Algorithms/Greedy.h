@@ -22,7 +22,7 @@ namespace Greedy {
 
         auto start = std::chrono::high_resolution_clock::now();
 
-        cout << "Optimal solution using Greedy approach: "<< endl;
+        cout << "Optimal solution using Greedy approach by Density: "<< endl;
 
         if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
             cout << "no possible result" << endl;
@@ -41,8 +41,8 @@ namespace Greedy {
         for (unsigned int i = 0; i < n_pallets; i++) {
             auto current = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
-            if (duration>=std::chrono::seconds(10)) {
-                cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
+            if (duration>=std::chrono::seconds(20)) {
+                cout << "Too much time! It took more than 20 seconds! Choose another algorithm!" << endl;
                 return;
             }
             if (weight + pallets[v[i].second].weight <= capacity) {
@@ -60,7 +60,7 @@ namespace Greedy {
     void runValue(int capacity, int n_pallets, Pallet * pallets){
         auto start = std::chrono::high_resolution_clock::now();
 
-        cout << "Optimal solution using Greedy approach: "<< endl;
+        cout << "Optimal solution using Greedy approach by Value: "<< endl;
 
         if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
             cout << "no possible result" << endl;
@@ -79,8 +79,8 @@ namespace Greedy {
         for (unsigned int i = 0; i < n_pallets; i++) {
             auto current = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
-            if (duration>=std::chrono::seconds(10)) {
-                cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
+            if (duration>=std::chrono::seconds(20)) {
+                cout << "Too much time! It took more than 20 seconds! Choose another algorithm!" << endl;
                 return;
             }
             if (weight + v[i].weight<= capacity) {
@@ -97,7 +97,7 @@ namespace Greedy {
 
     void run2Aproximation(int capacity, int n_pallets, Pallet * pallets){
 
-        cout << "Optimal solution using 2 Aproximation (Best of Greedy) approach: "<< endl;
+        cout << "Optimal solution using 2 Aproximation (Best of Greedy): "<< endl;
 
         auto start = std::chrono::high_resolution_clock::now();
 
@@ -145,9 +145,11 @@ namespace Greedy {
         auto end = std::chrono::high_resolution_clock::now();
 
         if (resValue > resDensity) {
+            cout << "Using Greedy by Value approach:" << endl;
             Outinho::terminal_output(n_pallets,pallets,usedItemsValue,start, end);
         }
         else {
+            cout << "Using Greedy by Density approach:" << endl;
             Outinho::terminal_output(n_pallets,pallets,usedItemsDensity,start, end);
         }
 

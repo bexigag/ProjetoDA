@@ -93,7 +93,7 @@ void Menu::run() {
                 int optionGreedy;
                 cout << "1 Run Greedy by Density" << endl;
                 cout << "2 Run Greedy by Value" << endl;
-                cout << "3 Run 2 Aproximation (best of Greedy by Value and Greedy by Density" << endl;
+                cout << "3 Run 2 Aproximation (best of Greedy by Value and Greedy by Density)" << endl;
 
                 cin >> optionGreedy;
                 if (optionGreedy == 1) {

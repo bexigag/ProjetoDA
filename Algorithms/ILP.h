@@ -27,8 +27,6 @@ namespace ILP {
     void runILP(int capacity, int n_pallets, Pallet* pallets) {
     auto start = chrono::high_resolution_clock::now();
 
-    cout << "Optimal solution using ILP approach: " << endl;
-
     if (capacity < 0 || n_pallets < 0 || pallets == nullptr) {
         cout << "no possible result" << endl;
         return;
@@ -72,15 +70,12 @@ namespace ILP {
 
     auto end = chrono::high_resolution_clock::now();
 
+    cout << "Optimal solution using ILP approach: " << endl;
+
     // 4. Mostrar resultado
     Outinho::terminal_output(n_pallets, pallets, usedItems, start, end);
 }
 
-
-    void runLP(int capacity, int n_pallets, Pallet * tempPallets){
-
-
-    }
 }
 
 #endif //ILP_H

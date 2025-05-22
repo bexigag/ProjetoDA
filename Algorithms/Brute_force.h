@@ -37,8 +37,8 @@ namespace Brute_force {
         while (flag) {
             auto current = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
-            if (duration>=std::chrono::seconds(10)) {
-                cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
+            if (duration>=std::chrono::seconds(20)) {
+                cout << "Too much time! It took more than 20 seconds! Choose another algorithm!" << endl;
                 return;
             }
             flag = false;
@@ -81,12 +81,12 @@ namespace Brute_force {
     }
 
     void recursiveBacktracking(unsigned int k, int capacity, int n_pallets, Pallet *pallets, bool tempUsedItems[],
-        unsigned int sum_weight, unsigned int sum_profit, unsigned int & best_profit, unsigned int & best_weight,bool bestUsedItems[], auto start) {
+        unsigned int sum_weight, unsigned int sum_profit, unsigned int & best_profit, unsigned int & best_weight,bool bestUsedItems[], std::chrono::time_point<std::chrono::high_resolution_clock> start) {
 
         auto current = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
-        if (duration>=std::chrono::seconds(10)) {
-            cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
+        if (duration>=std::chrono::seconds(20)) {
+            cout << "Too much time! It took more than 20 seconds! Choose another algorithm!" << endl;
             return;
         }
 

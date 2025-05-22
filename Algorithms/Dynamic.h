@@ -54,8 +54,8 @@ namespace Dynamic {
         while (index>0) {
             auto current = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
-            if (duration>=std::chrono::seconds(10)) {
-                cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
+            if (duration>=std::chrono::seconds(20)) {
+                cout << "Too much time! It took more than 20 seconds! Choose another algorithm!" << endl;
                 return;
             }
             if (j>=pallets[index-1].weight and max>val[index-1][j]) {
