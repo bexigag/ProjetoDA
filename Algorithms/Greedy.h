@@ -11,7 +11,6 @@
 #include "../parse/Pallet.h"
 #include "Outinho.h"
 #include <chrono>
-#include "Utils.h"
 #include <limits>
 #include <stack>
 #include <algorithm>
@@ -88,15 +87,58 @@ namespace Greedy {
 
         cout << "Optimal solution using 2 Aproximation (Best of Greedy) approach: "<< endl;
 
+        auto start = std::chrono::high_resolution_clock::now();
+
+
         if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
             cout << "no possible result" << endl;
             return;
         }
 
+        bool usedItemsValue[n_pallets]={false};
+        vector<Pallet> v;
+        for (unsigned int i = 0; i < n_pallets; i++) {
+            v.push_back(pallets[i]);
+        }
+
+        sort(v.begin(), v.end(), [](const Pallet& p1, const Pallet& p2) {return p1.profit > p2.profit;});
+        int weight = 0;
+        int resValue = 0;
+        for (unsigned int i = 0; i < n_pallets; i++) {
+            if (weight + v[i].weight<= capacity) {
+                weight += v[i].weight;
+                resValue += v[i].profit;
+                usedItemsValue[v[i].id - 1] = true;
+            }
+        }
+
+        bool usedItemsDensity[n_pallets]={false};
+
+        vector<pair<double, unsigned int>> v2;
+        for (unsigned int i = 0; i < n_pallets; i++) {
+            v2.push_back({(double)pallets[i].profit/pallets[i].weight,i});
+        }
+        sort(v2.begin(), v2.end(), [](const pair<double, unsigned int>& p1, const pair<double, unsigned int>& p2) {return p1.first > p2.first;});
+        weight = 0;
+        int resDensity = 0;
+        for (unsigned int i = 0; i < n_pallets; i++) {
+            if (weight + pallets[v2[i].second].weight <= capacity) {
+                weight += pallets[v2[i].second].weight;
+                resDensity += pallets[v2[i].second].profit;
+                usedItemsDensity[v2[i].second] = true;
+            }
+        }
 
 
-        runValue(capacity, n_pallets, pallets);
-        runDensity(capacity, n_pallets, pallets);
+        auto end = std::chrono::high_resolution_clock::now();
+
+        if (resValue > resDensity) {
+            Outinho::terminal_output(n_pallets,pallets,usedItemsValue,start, end);
+        }
+        else {
+            Outinho::terminal_output(n_pallets,pallets,usedItemsDensity,start, end);
+        }
+
     }
 
 }

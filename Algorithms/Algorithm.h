@@ -9,7 +9,6 @@
 #include <vector>
 #include "../data_structures/Graph.h"
 #include "Outinho.h"
-#include "Utils.h"
 #include <limits>
 #include <stack>
 
