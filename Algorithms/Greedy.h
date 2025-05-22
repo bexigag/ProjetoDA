@@ -39,6 +39,12 @@ namespace Greedy {
         int weight = 0;
         int res = 0;
         for (unsigned int i = 0; i < n_pallets; i++) {
+            auto current = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
+            if (duration>=std::chrono::seconds(10)) {
+                cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
+                return;
+            }
             if (weight + pallets[v[i].second].weight <= capacity) {
                 weight += pallets[v[i].second].weight;
                 res += pallets[v[i].second].profit;
@@ -71,6 +77,12 @@ namespace Greedy {
         int weight = 0;
         int res = 0;
         for (unsigned int i = 0; i < n_pallets; i++) {
+            auto current = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
+            if (duration>=std::chrono::seconds(10)) {
+                cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
+                return;
+            }
             if (weight + v[i].weight<= capacity) {
                 weight += v[i].weight;
                 res += v[i].profit;
