@@ -81,14 +81,15 @@ namespace Brute_force {
     }
 
     void recursiveBacktracking(unsigned int k, int capacity, int n_pallets, Pallet *pallets, bool tempUsedItems[],
-        unsigned int sum_weight, unsigned int sum_profit, unsigned int & best_profit, unsigned int & best_weight,bool bestUsedItems[], std::chrono::time_point<std::chrono::high_resolution_clock> start) {
+        unsigned int sum_weight, unsigned int sum_profit, unsigned int & best_profit, unsigned int & best_weight,bool bestUsedItems[],bool & flag,std::chrono::time_point<std::chrono::high_resolution_clock> start) {
 
         auto current = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
         if (duration>=std::chrono::seconds(20)) {
-            cout << "Too much time! It took more than 20 seconds! Choose another algorithm!" << endl;
+            flag = true;
             return;
         }
+
 
         if (tempUsedItems[k]) {
             sum_weight += pallets[k].weight;
@@ -113,11 +114,11 @@ namespace Brute_force {
 
 
         tempUsedItems[k] = 1;
-        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems,start);
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems,flag,start);
 
         tempUsedItems[k] = 0;
 
-        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems,start);
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems,flag,start);
 
     }
 
@@ -142,12 +143,25 @@ namespace Brute_force {
         unsigned int sum_weight=0, sum_profit=0, best_profit=0,best_weight=0,k=0;
 
         tempUsedItems[k] = 1;
+        bool flag=false;
 
-        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems,start);
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems,flag,start);
+
+
+        if (flag) {
+            cout << "Too much time! It took more than 20 seconds! Choose another algorithm!" << endl;
+            return;
+        }
+
 
         tempUsedItems[k] = 0;
 
-        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems,start);
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems,flag,start);
+
+        if (flag) {
+            cout << "Too much time! It took more than 20 seconds! Choose another algorithm!" << endl;
+            return;
+        }
 
         auto end = std::chrono::high_resolution_clock::now();
 

@@ -29,7 +29,10 @@ namespace Dynamic {
             return;
         }
 
-        unsigned int val[n_pallets + 1][capacity+1];
+        //unsigned int val[n_pallets + 1][capacity+1];
+        vector<vector<unsigned int>> val(n_pallets + 1, vector<unsigned int>(capacity + 1, 0));
+
+        //primeiro foi usado array mas para valores muito grandes é excede o limite típico da stack (1–8 MB por thread), provocando crash imediato
 
         for (unsigned int i = 0; i <= n_pallets; i++) {
             for (unsigned int j = 0; j <= capacity; j++) {
