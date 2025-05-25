@@ -23,15 +23,15 @@ using namespace std;
 namespace bestoption{
 
     void runBestOption(int capacity, int n_pallets, Pallet *pallets){
-        double brute_force = log(2) *n_pallets;
-        double dynamic = log(capacity)+log(n_pallets);
+        double brute_force = n_pallets;
+        double dynamic = log2(capacity)+log2(n_pallets);
 
         if (brute_force > dynamic) {
             Dynamic::runDynamic(capacity, n_pallets, pallets);
         }
 
         else {
-            Brute_force::runBruteForce(capacity, n_pallets, pallets);
+            Brute_force::run_backtracking(capacity, n_pallets, pallets);
         }
     }
 

@@ -14,6 +14,7 @@
 #include <stack>
 #include "Outinho.h"
 
+
 using namespace std;
 
 namespace Dynamic {
@@ -28,7 +29,9 @@ namespace Dynamic {
             return;
         }
 
-        unsigned int val[n_pallets + 1][capacity+1];
+       // unsigned int val[n_pallets + 1][capacity+1];
+       vector<vector<unsigned int>> val(n_pallets + 1, vector<unsigned int>(capacity + 1, 0));
+
 
         for (unsigned int i = 0; i <= n_pallets; i++) {
             for (unsigned int j = 0; j <= capacity; j++) {
