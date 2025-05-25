@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <vector>
-#include "../data_structures/Graph.h"
 #include "../parse/Pallet.h"
 #include "Outinho.h"
 #include <limits>

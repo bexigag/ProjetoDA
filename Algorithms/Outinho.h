@@ -5,7 +5,6 @@
 #ifndef OUTINHO_H
 #define OUTINHO_H
 
-#include "../data_structures/Graph.h"
 #include "../parse/Pallet.h"
 #include <chrono>
 

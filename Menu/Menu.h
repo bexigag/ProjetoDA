@@ -4,8 +4,6 @@
 #include <iostream>
 #include <string>
 #include "../parse/parse.h"
-#include "../data_structures/Graph.h"
-#include "../Algorithms/Algorithm.h"
 #include "../parse/Pallet.h"
 #include "../Algorithms/Brute_force.h"
 #include "../Algorithms/Dynamic.h"
@@ -31,7 +29,7 @@ private:
 
     Pallet * pallets = nullptr;
 
-    Algorithm algorithm;
+
 };
 
 
@@ -80,14 +78,14 @@ void Menu::run() {
                 cin >> optionbruteforce;
 
                 if (optionbruteforce == 1) {
-                    Brute_force::run(capacity, n_pallets, pallets);
+                    Brute_force::runBruteForce(capacity, n_pallets, pallets);
                 }
                 else if (optionbruteforce == 2) {
                     Brute_force::run_backtracking(capacity, n_pallets, pallets);
                 }
             }
             else if (option == 2) {
-                Dynamic::run(capacity, n_pallets, pallets);
+                Dynamic::runDynamic(capacity, n_pallets, pallets);
             }
             else if (option == 3) {
                 int optionGreedy;

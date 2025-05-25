@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <vector>
-#include "../data_structures/Graph.h"
 #include "../parse/Pallet.h"
 #include "Outinho.h"
 #include <chrono>
@@ -17,7 +16,7 @@
 using namespace std;
 
 namespace Brute_force {
-    void run(int capacity, int n_pallets, Pallet *pallets) {
+    void runBruteForce(int capacity, int n_pallets, Pallet *pallets) {
         auto start = std::chrono::high_resolution_clock::now();
 
         cout << "Optimal solution using brute force approach: " << endl;
@@ -30,6 +29,8 @@ namespace Brute_force {
         bool tempUsedItems[n_pallets];
         bool usedItems[n_pallets];
         unsigned int res = 0;
+        unsigned int resWeights = 9999999;
+
         for (unsigned int i = 0; i < n_pallets; i++) {
             tempUsedItems[i] = 0;
         }
@@ -37,8 +38,8 @@ namespace Brute_force {
         while (flag) {
             auto current = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
-            if (duration>=std::chrono::seconds(10)) {
-                cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
+            if (duration>=std::chrono::seconds(20)) {
+                cout << "Too much time! It took more than 20 seconds! Choose another algorithm!" << endl;
                 return;
             }
             flag = false;
@@ -61,13 +62,15 @@ namespace Brute_force {
                     sum_profits += pallets[i].profit;
                 }
             }
-            if (sum_weights <= capacity) {
-                if (sum_profits > res) {
+            if (sum_weights <= capacity ) {
+                if (sum_profits > res || (sum_profits == res && sum_weights < resWeights)) {
+                    resWeights = sum_weights;
                     res = sum_profits;
                     for (unsigned int i = 0; i < n_pallets; i++) {
                         usedItems[i] = tempUsedItems[i];
                     }
                 }
+
             }
 
         }
@@ -81,14 +84,15 @@ namespace Brute_force {
     }
 
     void recursiveBacktracking(unsigned int k, int capacity, int n_pallets, Pallet *pallets, bool tempUsedItems[],
-        unsigned int sum_weight, unsigned int sum_profit, unsigned int & best_profit, unsigned int & best_weight,bool bestUsedItems[], auto start) {
+        unsigned int sum_weight, unsigned int sum_profit, unsigned int & best_profit, unsigned int & best_weight,bool bestUsedItems[],bool & flag,std::chrono::time_point<std::chrono::high_resolution_clock> start) {
 
         auto current = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
-        if (duration>=std::chrono::seconds(10)) {
-            cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
+        if (duration>=std::chrono::seconds(20)) {
+            flag = true;
             return;
         }
+
 
         if (tempUsedItems[k]) {
             sum_weight += pallets[k].weight;
@@ -100,7 +104,7 @@ namespace Brute_force {
         }
 
 
-        if (sum_profit>best_profit) {
+        if (sum_profit>best_profit || (sum_profit == best_profit && sum_weight < best_weight)) {
             best_profit = sum_profit;
             best_weight = sum_weight;
             for (unsigned int i = 0; i < n_pallets; i++) {
@@ -113,11 +117,11 @@ namespace Brute_force {
 
 
         tempUsedItems[k] = 1;
-        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems,start);
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems,flag,start);
 
         tempUsedItems[k] = 0;
 
-        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems,start);
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,bestUsedItems,flag,start);
 
     }
 
@@ -142,12 +146,25 @@ namespace Brute_force {
         unsigned int sum_weight=0, sum_profit=0, best_profit=0,best_weight=0,k=0;
 
         tempUsedItems[k] = 1;
+        bool flag=false;
 
-        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems,start);
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems,flag,start);
+
+
+        if (flag) {
+            cout << "Too much time! It took more than 20 seconds! Choose another algorithm!" << endl;
+            return;
+        }
+
 
         tempUsedItems[k] = 0;
 
-        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems,start);
+        recursiveBacktracking(k,capacity,n_pallets,pallets,tempUsedItems,sum_weight,sum_profit,best_profit,best_weight,usedItems,flag,start);
+
+        if (flag) {
+            cout << "Too much time! It took more than 20 seconds! Choose another algorithm!" << endl;
+            return;
+        }
 
         auto end = std::chrono::high_resolution_clock::now();
 

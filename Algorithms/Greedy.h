@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <vector>
-#include "../data_structures/Graph.h"
 #include "../parse/Pallet.h"
 #include "Outinho.h"
 #include <chrono>
@@ -20,9 +19,11 @@ using namespace std;
 namespace Greedy {
     void runDensity(int capacity, int n_pallets, Pallet * pallets){
 
-        auto start = std::chrono::high_resolution_clock::now();
 
         cout << "Optimal solution using Greedy approach: "<< endl;
+
+        auto start = std::chrono::high_resolution_clock::now();
+
 
         if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
             cout << "no possible result" << endl;
@@ -39,12 +40,7 @@ namespace Greedy {
         int weight = 0;
         int res = 0;
         for (unsigned int i = 0; i < n_pallets; i++) {
-            auto current = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
-            if (duration>=std::chrono::seconds(10)) {
-                cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
-                return;
-            }
+
             if (weight + pallets[v[i].second].weight <= capacity) {
                 weight += pallets[v[i].second].weight;
                 res += pallets[v[i].second].profit;
@@ -58,9 +54,11 @@ namespace Greedy {
     }
 
     void runValue(int capacity, int n_pallets, Pallet * pallets){
-        auto start = std::chrono::high_resolution_clock::now();
 
         cout << "Optimal solution using Greedy approach: "<< endl;
+
+        auto start = std::chrono::high_resolution_clock::now();
+
 
         if (capacity==-1 or n_pallets==-1 or pallets==nullptr){
             cout << "no possible result" << endl;
@@ -77,12 +75,6 @@ namespace Greedy {
         int weight = 0;
         int res = 0;
         for (unsigned int i = 0; i < n_pallets; i++) {
-            auto current = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::seconds>(current - start);
-            if (duration>=std::chrono::seconds(10)) {
-                cout << "Too much time! It took more than 10 seconds! Choose another algorithm!" << endl;
-                return;
-            }
             if (weight + v[i].weight<= capacity) {
                 weight += v[i].weight;
                 res += v[i].profit;

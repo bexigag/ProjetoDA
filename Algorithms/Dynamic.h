@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <vector>
-#include "../data_structures/Graph.h"
 #include "../parse/Pallet.h"
 #include "Outinho.h"
 #include <chrono>
@@ -18,7 +17,7 @@
 using namespace std;
 
 namespace Dynamic {
-    void run(int capacity, int n_pallets, Pallet * pallets){
+    void runDynamic(int capacity, int n_pallets, Pallet * pallets){
         auto start = std::chrono::high_resolution_clock::now();
 
 
