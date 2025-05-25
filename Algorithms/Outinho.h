@@ -8,7 +8,26 @@
 #include "../parse/Pallet.h"
 #include <chrono>
 
+
+/**
+ * @namespace Outinho
+ * @brief This namespace is responsible for
+ * outputting the results on the terminal
+ *
+ */
 namespace Outinho {
+
+    /**
+     * @brief outputs the results on the terminal
+     *
+     * @param n_pallets the number of pallets
+     * @param pallets pointer to object Pallet
+     * @param usedItems array with
+     * what items are being used
+     * @param start start time of the algorithm
+     * @param end end time of the algorithm
+     * @return void
+     */
     void terminal_output(int n_pallets, Pallet *pallets, bool usedItems[], std::chrono::time_point<std::chrono::high_resolution_clock> start, std::chrono::time_point<std::chrono::high_resolution_clock> end) {
         auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
         unsigned int last_id=-1;

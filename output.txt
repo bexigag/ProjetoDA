@@ -1,2 +1,2 @@
-selected_items 0 1 0 1 0
-total_value 35
+selected_items 1 1
+total_value 7

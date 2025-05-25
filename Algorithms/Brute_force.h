@@ -15,7 +15,23 @@
 
 using namespace std;
 
+/**
+ * @namespace Brute_force
+ * @brief This namespace is responsible for implementing the
+ * brute force and backtracking approaches
+ *
+ */
 namespace Brute_force {
+
+
+    /**
+     * @brief brute force approach to the problem
+     *
+     * @param capacity the maximum weight of the pallets
+     * @param n_pallets the number of pallets
+     * @param pallets pointer to object Pallet
+     * @return void
+     */
     void runBruteForce(int capacity, int n_pallets, Pallet *pallets) {
         auto start = std::chrono::high_resolution_clock::now();
 
@@ -83,6 +99,30 @@ namespace Brute_force {
 
     }
 
+
+
+    /**
+     * @brief recursive auxiliary function to
+     * the backtracking approach
+     *
+     * @param k the index of the item that is being
+     * analised in this function call
+     * @param capacity the maximum weight of the pallets
+     * @param n_pallets the number of pallets
+     * @param pallets pointer to object Pallet
+     * @param tempUsedItems temporary array with
+     * what items are being used
+     * @param sum_weight current sum of the weights
+     * @param sum_profit current sum of the profits
+     * @param best_profit best profit yet
+     * @param best_weight sum of the weights
+     * to obtain the best profit yet
+     * @param bestUsedItems array with what
+     * items are being used in the best solution yet
+     * @param flag identify if algorithm exceeded time
+     * @param start start time of the algorithm
+     * @return void
+     */
     void recursiveBacktracking(unsigned int k, int capacity, int n_pallets, Pallet *pallets, bool tempUsedItems[],
         unsigned int sum_weight, unsigned int sum_profit, unsigned int & best_profit, unsigned int & best_weight,bool bestUsedItems[],bool & flag,std::chrono::time_point<std::chrono::high_resolution_clock> start) {
 
@@ -125,6 +165,16 @@ namespace Brute_force {
 
     }
 
+
+
+
+    /**
+     * @brief backtracking approach
+     * @param capacity the maximum weight of the pallets
+     * @param n_pallets the number of pallets
+     * @param pallets pointer to object Pallet
+     * @return void
+     */
     void run_backtracking(int capacity, int n_pallets, Pallet *pallets) {
 
         auto start = std::chrono::high_resolution_clock::now();

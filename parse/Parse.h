@@ -15,6 +15,16 @@ using namespace std;
 
 namespace Parse{
 
+
+    /**
+    * @brief Reads the input of the max capacity
+    * and the number of pallets
+    * sequence: Capacity,Pallets
+    * @param capacity max weight
+    * @param n_pallets number of pallets
+    * to be stored
+    * @return void
+    */
     int readTruckAndPallets(int &capacity, int &n_pallets) {
         cout << "Capacity,Pallets" << endl;
         string input;
@@ -32,6 +42,15 @@ namespace Parse{
         }
     }
 
+    /**
+    * @brief Reads the input of each pallet
+    * and associated weight and profit
+    * sequence: Pallet,Weight,Profit
+    * @param pallets pointer to the object Pallet
+    * @param n_pallets number of pallets
+    * to be stored
+    * @return void
+    */
     int readPallets(Pallet *& pallets,int n_pallets) {
         cout << "Pallet,Weight,Profit" << endl;
         if (pallets != nullptr) {
@@ -64,6 +83,18 @@ namespace Parse{
         return 0;
     }
 
+
+
+    /**
+    * @brief Reads the input of each pallet
+    * and associated weight and profit
+    * sequence: Pallet,Weight,Profit
+    * @param capacity pointer to the object Pallet
+    * @param pallets pointer to the object Pallet
+    * @param n_pallets number of pallets
+    * to be stored
+    * @return void
+    */
     void displayInput(int & capacity,int & n_pallets, Pallet * pallets) {
         cout <<  "O truck tem capacidade: " << capacity << endl;
         cout << "Tem "<< n_pallets << " pallets:" << endl;
@@ -73,6 +104,14 @@ namespace Parse{
         }
     }
 
+
+    /**
+    * @brief clears the input
+    * @param capacity pointer to the object Pallet
+    * @param pallets pointer to the object Pallet
+    * @param n_pallets number of pallets
+    * @return void
+    */
     void clearInput(int & capacity,int & n_pallets, Pallet *& pallets) {
         capacity = -1;
         n_pallets = -1;

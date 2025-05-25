@@ -4,6 +4,9 @@
 using namespace std;
 
 
+/**
+     * @brief runs the program
+     */
 int main(){
     Menu menu;
     menu.run();

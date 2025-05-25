@@ -17,7 +17,27 @@
 
 using namespace std;
 
+
+
+/**
+ * @namespace Dynamic
+ * @brief This namespace is responsible for implementing the
+ * dynamic programming approach
+ *
+ */
 namespace Dynamic {
+
+
+
+
+    /**
+     * @brief dynamic programming approach to the problem
+     *
+     * @param capacity the maximum weight of the pallets
+     * @param n_pallets the number of pallets
+     * @param pallets pointer to object Pallet
+     * @return void
+     */
     void runDynamic(int capacity, int n_pallets, Pallet * pallets){
         auto start = std::chrono::high_resolution_clock::now();
 

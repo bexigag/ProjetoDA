@@ -17,8 +17,16 @@ using namespace std;
 class Menu{
 public:
 
+    /**
+* @brief empty constructor of the Menu class
+* @return Menu
+*/
     Menu() {}
 
+    /**
+* @brief function that allows the program to run
+* @return void
+*/
     void run();
 
 private:

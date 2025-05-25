@@ -20,8 +20,24 @@
 
 using namespace std;
 
+/**
+ * @namespace bestoption
+ * @brief This namespace is responsible for implementing the
+ * algorithm of the project with the lowest execution time
+ *
+ */
 namespace bestoption{
 
+
+
+    /**
+     * @brief chooses the right algorithm accordingly to the input provided
+     *
+     * @param capacity the maximum weight of the pallets
+     * @param n_pallets the number of pallets
+     * @param pallets pointer to object Pallet
+     * @return void
+     */
     void runBestOption(int capacity, int n_pallets, Pallet *pallets){
         double brute_force = n_pallets;
         double dynamic = log2(capacity)+log2(n_pallets);

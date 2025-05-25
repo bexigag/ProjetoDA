@@ -16,7 +16,26 @@
 
 using namespace std;
 
+
+/**
+ * @namespace Greedy
+ * @brief This namespace is responsible for implementing the
+ * greedy approaches to the problem
+ *
+ */
 namespace Greedy {
+
+
+
+
+    /**
+     * @brief greedy by density (best profit/weight)
+     *
+     * @param capacity the maximum weight of the pallets
+     * @param n_pallets the number of pallets
+     * @param pallets pointer to object Pallet
+     * @return void
+     */
     void runDensity(int capacity, int n_pallets, Pallet * pallets){
 
 
@@ -53,6 +72,17 @@ namespace Greedy {
         Outinho::terminal_output(n_pallets,pallets,usedItems,start, end);
     }
 
+
+
+
+    /**
+     * @brief greedy by value (best profit)
+     *
+     * @param capacity the maximum weight of the pallets
+     * @param n_pallets the number of pallets
+     * @param pallets pointer to object Pallet
+     * @return void
+     */
     void runValue(int capacity, int n_pallets, Pallet * pallets){
 
         cout << "Optimal solution using Greedy approach: "<< endl;
@@ -87,6 +117,16 @@ namespace Greedy {
         Outinho::terminal_output(n_pallets,pallets,usedItems,start, end);
     }
 
+
+
+    /**
+     * @brief chooses the fastest greedy algorithm
+     *
+     * @param capacity the maximum weight of the pallets
+     * @param n_pallets the number of pallets
+     * @param pallets pointer to object Pallet
+     * @return void
+     */
     void run2Aproximation(int capacity, int n_pallets, Pallet * pallets){
 
         cout << "Optimal solution using 2 Aproximation (Best of Greedy) approach: "<< endl;
