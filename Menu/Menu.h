@@ -8,7 +8,7 @@
 #include "../Algorithms/Brute_force.h"
 #include "../Algorithms/Dynamic.h"
 #include "../Algorithms/Greedy.h"
-#include "../Algorithms/ILP.h"
+#include "../Algorithms/BestOption.h"
 #include "../Algorithms/Outinho.h"
 
 
@@ -68,6 +68,7 @@ void Menu::run() {
             cout << "2 Run Dynamic programming aproach" << endl;
             cout << "3 Run Greedy aproach" << endl;
             cout << "4 Run Integer Linear programming aproach" << endl;
+            cout << "5 Run Best Option" << endl;
             cout << "Choose an option:" << endl;
             cin >> option;
             if (option == 1) {
@@ -106,6 +107,9 @@ void Menu::run() {
             }
             else if (option == 4) {
                 ILP::runILP(capacity, n_pallets, pallets);
+            }
+            else if (option == 5) {
+                bestoption::runBestOption(capacity, n_pallets,pallets);
             }
             else {
                 cout << "invalid input" << endl;
