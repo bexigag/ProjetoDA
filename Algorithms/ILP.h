@@ -6,17 +6,10 @@
 #define ILP_H
 
 #include <iostream>
-#include <vector>
 #include "../parse/Pallet.h"
 #include "Outinho.h"
-#include <limits>
 #include <chrono>
-#include <stack>
-#include "Outinho.h"
-#include <iostream>
 #include <fstream>
-#include <vector>
-#include <chrono>
 #include <cstdlib>
 #include <string>
 
@@ -33,7 +26,7 @@ namespace ILP {
 
 
     /**
-     * @brief runs the Integer Linear programming algorithm
+     * @brief runs the Integer Linear programming algorithm, using the python script (Time: O(2^n), Space: O(n))
      *
      * @param capacity the maximum weight of the pallets
      * @param n_pallets the number of pallets

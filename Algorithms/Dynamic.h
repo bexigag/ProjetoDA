@@ -10,9 +10,6 @@
 #include "../parse/Pallet.h"
 #include "Outinho.h"
 #include <chrono>
-#include <limits>
-#include <stack>
-#include "Outinho.h"
 
 
 using namespace std;
@@ -31,7 +28,7 @@ namespace Dynamic {
 
 
     /**
-     * @brief dynamic programming approach to the problem
+     * @brief dynamic programming approach to the problem (Time: O(n*W) or O(n*2^x) being x the number of bits to represent W pseudo-polynomial, Space: O(n*W))
      *
      * @param capacity the maximum weight of the pallets
      * @param n_pallets the number of pallets

@@ -6,12 +6,10 @@
 #define BRUTE_FORCE_H
 
 #include <iostream>
-#include <vector>
 #include "../parse/Pallet.h"
 #include "Outinho.h"
 #include <chrono>
-#include <limits>
-#include <stack>
+
 
 using namespace std;
 
@@ -25,7 +23,7 @@ namespace Brute_force {
 
 
     /**
-     * @brief brute force approach to the problem
+     * @brief brute force approach to the problem (Time: O(n*2^n), Space: O(n))
      *
      * @param capacity the maximum weight of the pallets
      * @param n_pallets the number of pallets
@@ -169,7 +167,7 @@ namespace Brute_force {
 
 
     /**
-     * @brief backtracking approach
+     * @brief backtracking approach (Time: O(2^n), Space: O(n))
      * @param capacity the maximum weight of the pallets
      * @param n_pallets the number of pallets
      * @param pallets pointer to object Pallet

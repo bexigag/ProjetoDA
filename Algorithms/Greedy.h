@@ -10,8 +10,6 @@
 #include "../parse/Pallet.h"
 #include "Outinho.h"
 #include <chrono>
-#include <limits>
-#include <stack>
 #include <algorithm>
 
 using namespace std;
@@ -29,7 +27,7 @@ namespace Greedy {
 
 
     /**
-     * @brief greedy by density (best profit/weight)
+     * @brief greedy by density (best profit/weight) (Time: O(n*log(n)), Space: O(n))
      *
      * @param capacity the maximum weight of the pallets
      * @param n_pallets the number of pallets
@@ -39,7 +37,7 @@ namespace Greedy {
     void runDensity(int capacity, int n_pallets, Pallet * pallets){
 
 
-        cout << "Optimal solution using Greedy approach: "<< endl;
+        cout << "Optimal solution using Greedy (Density) approach: "<< endl;
 
         auto start = std::chrono::high_resolution_clock::now();
 
@@ -76,7 +74,7 @@ namespace Greedy {
 
 
     /**
-     * @brief greedy by value (best profit)
+     * @brief greedy by value (best profit) (Time: O(n*log(n)), Space: O(n))
      *
      * @param capacity the maximum weight of the pallets
      * @param n_pallets the number of pallets
@@ -85,7 +83,7 @@ namespace Greedy {
      */
     void runValue(int capacity, int n_pallets, Pallet * pallets){
 
-        cout << "Optimal solution using Greedy approach: "<< endl;
+        cout << "Optimal solution using Greedy (Value) approach: "<< endl;
 
         auto start = std::chrono::high_resolution_clock::now();
 
@@ -120,7 +118,7 @@ namespace Greedy {
 
 
     /**
-     * @brief chooses the fastest greedy algorithm
+     * @brief aprroximation of factor 2 using two bad greedy algorithms (Time: O(n*log(n)), Space: O(n))
      *
      * @param capacity the maximum weight of the pallets
      * @param n_pallets the number of pallets

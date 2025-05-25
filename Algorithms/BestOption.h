@@ -8,14 +8,11 @@
 
 #include <iostream>
 #include <string>
-#include "../parse/parse.h"
 #include <cmath>
 #include "../parse/Pallet.h"
 #include "../Algorithms/Brute_force.h"
 #include "../Algorithms/Dynamic.h"
-#include "../Algorithms/Greedy.h"
 #include "../Algorithms/ILP.h"
-#include "../Algorithms/Outinho.h"
 
 
 using namespace std;
@@ -23,7 +20,7 @@ using namespace std;
 /**
  * @namespace bestoption
  * @brief This namespace is responsible for implementing the
- * algorithm of the project with the lowest execution time
+ * algorithm of the project with the lowest execution time for a certain input
  *
  */
 namespace bestoption{
@@ -31,7 +28,7 @@ namespace bestoption{
 
 
     /**
-     * @brief chooses the right algorithm accordingly to the input provided
+     * @brief chooses the right algorithm accordingly to the input provided (O(1))
      *
      * @param capacity the maximum weight of the pallets
      * @param n_pallets the number of pallets
@@ -40,9 +37,12 @@ namespace bestoption{
      */
     void runBestOption(int capacity, int n_pallets, Pallet *pallets){
         double brute_force = n_pallets;
-        double dynamic = log2(capacity)+log2(n_pallets);
+        double dynamic = log2(capacity);
 
-        if (brute_force > dynamic) {
+        if (brute_force >= 30 || dynamic >= 20) {
+            Greedy::run2Aproximation(capacity, n_pallets, pallets);
+        }
+        else if (brute_force > dynamic) {
             Dynamic::runDynamic(capacity, n_pallets, pallets);
         }
 
